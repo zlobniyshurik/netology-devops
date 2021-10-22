@@ -11,13 +11,13 @@
 ![Bash](/dz01/01/bash.png)
 
 **Markdown**
-![Markdown](/dz/01/markdown.png)
+![Markdown](/dz01/01/markdown.png)
 
 **Yaml**
-![Yaml](/dz/01/yaml.png)
+![Yaml](/dz01/01/yaml.png)
 
 **Jsonnet**
-![Jsonnet](/dz/01/jsonnet.png)
+![Jsonnet](/dz01/01/jsonnet.png)
 
 Задача 2
 --------
