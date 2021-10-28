@@ -14,5 +14,9 @@ bitbucket - https://bitbucket.org/zlobniyshurik/netology-devops/src/master/
 
 Задача 2
 --------
+Добавил таги **v0.0** и **v0.1**
+
+Задача 3
+--------
 
 
