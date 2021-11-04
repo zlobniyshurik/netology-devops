@@ -137,4 +137,15 @@ c0b176109 prevent log output during init
 
 *Кто автор функции* ***synchronizedWriters*** *?*
 
+1. Ищем старейший коммит с упоминанием этой функции
 
+**git log -S synchronizedWriters --reverse**
+
+Получаем коммит **commit 5ac311e2a91e381e2f52234668b49ba670aa0fe5**
+
+2. Смотрим внутрь
+
+**git show 5ac311e2a91e381e2f52234668b49ba670aa0fe5**
+
+И, действительно, внутри добавляется текст функции.   
+Значит автор фунции - это автор данного коммита, то есть Martin Atkins <mart@degeneration.co.uk>
