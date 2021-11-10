@@ -13,3 +13,11 @@
 Задача 5
 --------
 
+**vagrant**`овский вариант виртуальной машины  
+[Vagrant_Ubuntu](/pic/Vagrant_VM_Settings.png)
+  
+
+**дефолтный** вариант виртуалки под убунту  
+[Default_Ubuntu](/pic/Default_VM_Settings.png)
+  
+
