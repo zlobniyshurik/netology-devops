@@ -13,7 +13,7 @@
 Задача 5
 --------
 
-**vagrant**`овский вариант виртуальной машины  
+**vagrant**овский вариант виртуальной машины  
 ![Vagrant_Ubuntu](/dz06/pic/Vagrant_VM_settings.png)
   
 
@@ -21,3 +21,16 @@
 ![Default_Ubuntu](/dz06/pic/Default_VM_settings.png)
   
 
+Задача 6
+--------
+
+Чтобы задать количество виртуальных ядер и памяти в виртуалке,  
+прописываем в файле **Vagrantfile** секцию вида
+  
+ config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 2
+ end
+
+Задача 8
+--------
