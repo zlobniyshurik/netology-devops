@@ -14,10 +14,10 @@
 --------
 
 **vagrant**`овский вариант виртуальной машины  
-[Vagrant_Ubuntu](/pic/Vagrant_VM_settings.png)
+[Vagrant_Ubuntu](/dz06/pic/Vagrant_VM_settings.png)
   
 
 **дефолтный** вариант виртуалки под убунту  
-[Default_Ubuntu](/pic/Default_VM_settings.png)
+[Default_Ubuntu](/dz06/pic/Default_VM_settings.png)
   
 
