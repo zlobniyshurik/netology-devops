@@ -133,7 +133,7 @@
 *При открытии нового окна терминала и* ***vagrant ssh*** *создается новая сессия и выделяется pty.  
 Это можно подтвердить командой* ***tty*** *, которая упоминалась в лекции 3.2. Однако:*  
 <code>
-vagrant@netology1:~$ ssh localhost 'tty'
+vagrant@netology1:~$ ssh localhost 'tty'  
 not a tty
 </code>
   
