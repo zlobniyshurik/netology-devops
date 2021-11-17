@@ -24,14 +24,12 @@ bash при старте. Вам нужно найти тот единствен
 
 *Попробуйте использовать команду* ***file*** *на объекты разных типов на файловой системе. Например:*  
   
-<code>
-vagrant@netology1:~$ file /dev/tty  
+***vagrant@netology1:~$ file /dev/tty  
 /dev/tty: character special (5/0)  
 vagrant@netology1:~$ file /dev/sda  
 /dev/sda: block special (8/0)  
 vagrant@netology1:~$ file /bin/bash  
-/bin/bash: ELF 64-bit LSB shared object, x86-64  
-</code>
+/bin/bash: ELF 64-bit LSB shared object, x86-64***  
   
 *Используя* ***strace*** *выясните, где находится база данных* ***file*** *на основании которой она делает свои догадки.*  
   
