@@ -16,6 +16,37 @@ bash при старте. Вам нужно найти тот единствен
 По идее, получим вот что:  
 ![Результат strace](/dz08/pic/strace1.png)
   
+Строчка с **chdir** - тот самый вызов.  
+  
 
 Задача 2
+--------
+
+*Попробуйте использовать команду* ***file*** *на объекты разных типов на файловой системе. Например:*  
+  
+<code>
+vagrant@netology1:~$ file /dev/tty  
+/dev/tty: character special (5/0)  
+vagrant@netology1:~$ file /dev/sda  
+/dev/sda: block special (8/0)  
+vagrant@netology1:~$ file /bin/bash  
+/bin/bash: ELF 64-bit LSB shared object, x86-64  
+</code>
+  
+*Используя* ***strace*** *выясните, где находится база данных* ***file*** *на основании которой она делает свои догадки.*  
+  
+Запустив **strace file /dev/tty 2>&1**, обнаруживаем попытку обращения к нескольким подозрительным файлам:  
+  
+**/home/vagrant/.magic.mgc** (такого файла нет)  
+**/home/vagrant/.magic** (такого файла нет)  
+**/etc/magic.mgc** (такого файла нет)  
+**/etc/magic**  
+**/usr/share/misc/magic.mgc**  
+  
+**/etc/magic** оказывается хранилищем сигнатур(?) файлов,  
+а в **/usr/share/misc/magic.mgc** тоже хранилище, но в бинарном формате.  
+  
+И если глянуть **man file**, то наши подозрения полностью подтверждаются.  
+
+Задача 3
 --------
