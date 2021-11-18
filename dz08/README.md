@@ -160,4 +160,4 @@ bash при старте. Вам нужно найти тот единствен
 S -  Interruptible sleep (waiting for an event to complete). То есть в спячке, но можно разбудить.  
 s - session leader (чего бы это ни значило)  
 R -  Running or runnable (on run queue). То есть, работает.  
-+ - is in the foreground process group. То есть, не в фоновом режиме.  
+\+ - is in the foreground process group. То есть, не в фоновом режиме.  
