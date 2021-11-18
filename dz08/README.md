@@ -81,12 +81,16 @@ bash при старте. Вам нужно найти тот единствен
 --------
 
 *В iovisor BCC есть утилита* ***opensnoop*** *:*  
-    root@vagrant:~# dpkg -L bpfcc-tools | grep sbin/opensnoop
-    /usr/sbin/opensnoop-bpfcc
-*На какие файлы вы увидели вызовы группы* ***open*** *за первую секунду работы утилиты? Воспользуйтесь пакетом*  
-**bpfcc-tools** *для Ubuntu 20.04.*  
   
-!TODO!
+    root@vagrant:~# dpkg -L bpfcc-tools | grep sbin/opensnoop  
+    /usr/sbin/opensnoop-bpfcc  
+  
+*На какие файлы вы увидели вызовы группы* ***open*** *за первую секунду работы утилиты?  
+Воспользуйтесь пакетом* **bpfcc-tools** *для Ubuntu 20.04.*  
+  
+Получилось примерно так:  
+![opensnoop](/dz08/pic/opensnoop.png)
+  
 
 Задача 6
 --------
@@ -100,10 +104,10 @@ bash при старте. Вам нужно найти тот единствен
 --------
 
 *Чем отличается последовательность команд через* ***\;*** *и через* ***\&\&*** *в* ***bash*** *? Например:*  
-    root@netology1:~# test -d /tmp/some_dir; echo Hi
+    root@netology1:~\# test -d /tmp/some_dir; echo Hi
     Hi
-    root@netology1:~# test -d /tmp/some_dir && echo Hi
-    root@netology1:~#
+    root@netology1:~\# test -d /tmp/some_dir && echo Hi
+    root@netology1:~\#
 *Есть ли смысл использовать в bash* ***\&\&*** *, если применить* ***set -e*** *?*  
   
 !TODO!
