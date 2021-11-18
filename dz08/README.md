@@ -155,5 +155,9 @@ bash при старте. Вам нужно найти тот единствен
 **ps -o stat** выдал следующее:  
 ![ps -o stat](/dz08/pic/psstat.png)
   
-Я бы это расшифровал примерно так -
-
+Я бы это расшифровал примерно так:  
+  
+S -  Interruptible sleep (waiting for an event to complete). То есть в спячке, но можно разбудить.  
+s - session leader (чего бы это ни значило)  
+R -  Running or runnable (on run queue). То есть, работает.  
++ - is in the foreground process group. То есть, не в фоновом режиме.  
