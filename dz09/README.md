@@ -30,7 +30,47 @@ background. Этого достаточно для демо, но не для н
 Задача 2
 --------
 
-!TODO!
+*Ознакомьтесь с опциями* ***node_exporter*** *и выводом* ***/metrics*** *по-умолчанию. Приведите несколько опций,  
+которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.*  
+
+**CPU:**  
++ node_cpu_seconds_total  
++ node_cpu_guest_seconds_total  
+
+**память:**  
++ node_memory_Buffers_bytes  
++ node_memory_Cached_bytes  
++ node_memory_SwapFree_bytes  
++ node_memory_SwapTotal_bytes  
++ node_memory_HardwareCorrupted_bytes  
++ node_memory_MemAvailable_bytes  
++ node_memory_MemFree_bytes  
++ node_memory_MemTotal_bytes  
+
+**диск:**  
++ node_disk_info  
++ node_disk_io_now  
++ node_disk_io_time_seconds_total  
++ node_disk_io_time_weighted_seconds_total  
++ node_disk_read_bytes_total  
++ node_disk_read_time_seconds_total  
++ node_disk_reads_completed_total  
++ node_disk_reads_merged_total  
++ node_disk_write_time_seconds_total  
++ node_disk_writes_completed_total  
++ node_disk_writes_merged_total  
++ node_disk_written_bytes_total  
+
+**сеть:**  
++ node_network_up  
++ node_network_speed_bytes  
++ node_network_transmit_bytes_total  
++ node_network_transmit_errs_total  
++ node_network_transmit_queue_length  
++ node_network_receive_bytes_total  
++ node_network_receive_errs_total  
+  
+P.S. Возможно, половина этих данных не нужна, но пока не увижу это всё в графическом представлении - не узнаю.  
 
 Задача 3
 --------
