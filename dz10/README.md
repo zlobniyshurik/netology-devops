@@ -19,7 +19,8 @@
 Задача 3
 --------
 
-*Сделайте* ***vagrant destroy*** на имеющийся инстанс Ubuntu. Замените содержимое ***Vagrantfile*** следующим:*
+*Сделайте* ***vagrant destroy*** на имеющийся инстанс Ubuntu. Замените содержимое ***Vagrantfile*** следующим:*  
+  
 <code>
     Vagrant.configure("2") do |config|  
       config.vm.box = "bento/ubuntu-20.04"  
@@ -33,8 +34,8 @@
       end  
     end  
 </code>
-
-Готово:
+  
+Готово:  
 ![Диски в вагранте](/dz10/pic/dz10_3.png)
 
 Задача 4
