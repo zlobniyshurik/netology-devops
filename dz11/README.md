@@ -95,7 +95,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 *Повторите задание 5 в утилите* ***mtr*** *. На каком участке наибольшая задержка - delay?*  
   
-*mtr -z -c -r 5 8.8.8.8* выдал следующее:  
+**mtr -z -c 5 -r 8.8.8.8** выдал следующее:  
 ```bash
 [shurik@juggernaut netology-devops]$ mtr -z -c 5 -r 8.8.8.8
 Start: 2021-11-26T10:58:14+0700
