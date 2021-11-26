@@ -126,3 +126,69 @@ HOST: juggernaut.xxxxxxx.yy       Loss%   Snt   Last   Avg  Best  Wrst StDev
 
 Задача 7
 --------
+
+*Какие DNS сервера отвечают за доменное имя* ***dns.google*** *? Какие A записи? воспользуйтесь утилитой* ***dig***  
+  
+Смотрим NS-сервера:  
+```bash
+[shurik@juggernaut netology-devops]$ dig -t ns dns.google
+
+; <<>> DiG 9.16.23-RH <<>> -t ns dns.google
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 19329
+;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;dns.google.                    IN      NS
+
+;; ANSWER SECTION:
+dns.google.             86400   IN      NS      ns1.zdns.google.
+dns.google.             86400   IN      NS      ns2.zdns.google.
+dns.google.             86400   IN      NS      ns3.zdns.google.
+dns.google.             86400   IN      NS      ns4.zdns.google.
+
+;; Query time: 653 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Fri Nov 26 11:16:43 +07 2021
+;; MSG SIZE  rcvd: 116
+```
+  
+Соответственно, нас интересуют NS-сервера:  
++ **ns1.zdns.google**  
++ **ns2.zdns.google**  
++ **ns3.zdns.google**  
++ **ns4.zdns.google**  
+  
+Далее смотрим A-записи:  
+```bash
+[shurik@juggernaut netology-devops]$ dig dns.google
+
+; <<>> DiG 9.16.23-RH <<>> dns.google
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29591
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;dns.google.                    IN      A
+
+;; ANSWER SECTION:
+dns.google.             3600    IN      A       8.8.8.8
+dns.google.             3600    IN      A       8.8.4.4
+
+;; Query time: 322 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Fri Nov 26 11:14:31 +07 2021
+;; MSG SIZE  rcvd: 71
+```
+  
+То есть, IP-адреса **8.8.8.8** и **8.8.4.4**  
+
+Задача 8
+--------
+
