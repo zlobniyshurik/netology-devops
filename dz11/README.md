@@ -192,3 +192,54 @@ dns.google.             3600    IN      A       8.8.4.4
 Задача 8
 --------
 
+*Проверьте PTR записи для IP адресов из задания 7. Какое доменное имя привязано к IP? воспользуйтесь утилитой* ***dig***  
+  
+Проверяем **8.8.8.8**:  
+```bash
+[shurik@juggernaut netology-devops]$ dig -x 8.8.8.8
+
+; <<>> DiG 9.16.23-RH <<>> -x 8.8.8.8
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 61255
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;8.8.8.8.in-addr.arpa.          IN      PTR
+
+;; ANSWER SECTION:
+8.8.8.8.in-addr.arpa.   30      IN      PTR     dns.google.
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Fri Nov 26 12:22:22 +07 2021
+;; MSG SIZE  rcvd: 73
+```
+Получаем **dns.google**  
+  
+Проверяем **8.8.4.4**:  
+```bash
+[shurik@juggernaut netology-devops]$ dig -x 8.8.4.4
+
+; <<>> DiG 9.16.23-RH <<>> -x 8.8.4.4
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 6189
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;4.4.8.8.in-addr.arpa.          IN      PTR
+
+;; ANSWER SECTION:
+4.4.8.8.in-addr.arpa.   80528   IN      PTR     dns.google.
+
+;; Query time: 45 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Fri Nov 26 12:22:37 +07 2021
+;; MSG SIZE  rcvd: 73
+```
+Опять же получаем **dns.google**  
