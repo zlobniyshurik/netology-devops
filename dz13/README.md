@@ -59,3 +59,62 @@ Paths: (24 available, best #23, table default)
 
 Задача 2
 --------
+*Создайте* ***dummy0*** *интерфейс в Ubuntu. Добавьте несколько статических маршрутов. Проверьте таблицу маршрутизации.*  
+  
+Добавил **dummy0**:  
+```bash
+root@vagrant:/home/vagrant# ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 08:00:27:73:60:cf brd ff:ff:ff:ff:ff:ff
+3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 08:00:27:70:a8:22 brd ff:ff:ff:ff:ff:ff
+4: dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/ether 1a:09:e7:b7:60:8a brd ff:ff:ff:ff:ff:ff
+root@vagrant:/home/vagrant# ip address
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host 
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:73:60:cf brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 86361sec preferred_lft 86361sec
+    inet6 fe80::a00:27ff:fe73:60cf/64 scope link 
+       valid_lft forever preferred_lft forever
+3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default qlen 1000
+    link/ether 08:00:27:70:a8:22 brd ff:ff:ff:ff:ff:ff
+4: dummy0: <BROADCAST,NOARP,UP,LOWER_UP> mtu 1500 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/ether 1a:09:e7:b7:60:8a brd ff:ff:ff:ff:ff:ff
+    inet 10.1.2.3/32 brd 10.1.2.3 scope global dummy0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::1809:e7ff:feb7:608a/64 scope link 
+       valid_lft forever preferred_lft forever
+```
+  
+Добавляем маршруты и смотрим таблицу маршрутизации:  
+```bash
+root@vagrant:/home/vagrant# ip route
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100 
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+root@vagrant:/home/vagrant# ip route add 1.1.1.0/24 via 10.0.2.5
+root@vagrant:/home/vagrant# ip route add 1.1.0.0/16 via 10.0.2.6
+root@vagrant:/home/vagrant# ip route add 1.0.0.0/8 via 10.0.2.7
+root@vagrant:/home/vagrant# ip route add 9.0.0.0/8 via 10.0.2.7
+root@vagrant:/home/vagrant# ip route
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100 
+1.0.0.0/8 via 10.0.2.7 dev eth0 
+1.1.0.0/16 via 10.0.2.6 dev eth0 
+1.1.1.0/24 via 10.0.2.5 dev eth0 
+9.0.0.0/8 via 10.0.2.7 dev eth0 
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15 
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+```
+
+Задача 3
+--------
+
