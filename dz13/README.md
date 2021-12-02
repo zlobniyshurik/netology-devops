@@ -117,4 +117,22 @@ default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100
 
 Задача 3
 --------
+*Проверьте открытые TCP порты в Ubuntu, какие протоколы и приложения используют эти порты? Приведите несколько примеров.*  
+  
+Смотрим TCP-порты и открывшие их приложения:  
+```bash
+root@vagrant:/home/vagrant# ss -tpan
+State     Recv-Q    Send-Q       Local Address:Port        Peer Address:Port     Process                                                      
+LISTEN    0         4096               0.0.0.0:111              0.0.0.0:*         users:(("rpcbind",pid=592,fd=4),("systemd",pid=1,fd=35))    
+LISTEN    0         4096         127.0.0.53%lo:53               0.0.0.0:*         users:(("systemd-resolve",pid=593,fd=13))                   
+LISTEN    0         128                0.0.0.0:22               0.0.0.0:*         users:(("sshd",pid=805,fd=3))                               
+ESTAB     0         0                10.0.2.15:22              10.0.2.2:46490     users:(("sshd",pid=998,fd=4),("sshd",pid=806,fd=4))         
+LISTEN    0         4096                  [::]:111                 [::]:*         users:(("rpcbind",pid=592,fd=6),("systemd",pid=1,fd=37))    
+LISTEN    0         128                   [::]:22                  [::]:*         users:(("sshd",pid=805,fd=4))
+```
+**22 порт** - SSH (в нашем случае используется **sshd**)  
+**53 порт** - DNS (в нашем случае используется **systemd-resolve**)  
+**111 порт** - sunrpc (вроде бы нужен для NFS)  
 
+Задача 4
+--------
