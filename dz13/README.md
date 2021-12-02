@@ -136,3 +136,20 @@ LISTEN    0         128                   [::]:22                  [::]:*       
 
 Задача 4
 --------
+*Проверьте используемые UDP сокеты в Ubuntu, какие протоколы и приложения используют эти порты?*
+  
+Смотрим на UDP и видим следующее:  
+```bash
+root@vagrant:/home/vagrant# ss -upan
+State     Recv-Q    Send-Q        Local Address:Port        Peer Address:Port    Process                                                      
+UNCONN    0         0             127.0.0.53%lo:53               0.0.0.0:*        users:(("systemd-resolve",pid=593,fd=12))                   
+UNCONN    0         0            10.0.2.15%eth0:68               0.0.0.0:*        users:(("systemd-network",pid=398,fd=19))                   
+UNCONN    0         0                   0.0.0.0:111              0.0.0.0:*        users:(("rpcbind",pid=592,fd=5),("systemd",pid=1,fd=36))    
+UNCONN    0         0                      [::]:111                 [::]:*        users:(("rpcbind",pid=592,fd=7),("systemd",pid=1,fd=38))
+```
+**53 порт** - DNS (в нашем случае используется **systemd-resolve**)  
+**68 порт** - клиентский порт для DHCP, если не ошибаюсь (соответственно, используется службой сети)  
+**111 порт** - sunrpc (вроде бы нужен для NFS)  
+
+Задача 5
+--------
