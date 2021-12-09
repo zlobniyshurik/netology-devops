@@ -1,0 +1,431 @@
+## Scan started as: "testssl.sh --full -6 --color 0 --logfile test.log wiki.bfg-10k.ru"
+## at juggernaut:./bin/openssl.Linux.x86_64
+## version testssl: 3.1dev beac382 from 2021-12-08
+## version openssl: "1.0.2-chacha" from "Jan 18 17:12:17 2019")
+
+Testing all IPv4 addresses (port 443): 192.168.1.36 2001:470:1f0b:578::36
+----------------------------------------------------------------------------------------------
+ Start 2021-12-09 09:33:09        -->> 192.168.1.36:443 (wiki.bfg-10k.ru) <<--
+
+ Further IP addresses:   2001:470:1f0b:578::36 
+ rDNS (aaa.bbb.ccc.ddd):    bfg-10k.ru.
+ Service detected:       HTTP
+
+
+ Testing protocols via sockets except NPN+ALPN 
+
+ SSLv2      not offered (OK)
+ SSLv3      not offered (OK)
+ TLS 1      not offered
+ TLS 1.1    not offered
+ TLS 1.2    offered (OK)
+ TLS 1.3    offered (OK): final
+ NPN/SPDY   h2, http/1.1 (advertised)
+ ALPN/HTTP2 h2, http/1.1 (offered)
+
+ Testing for server implementation bugs 
+
+ No bugs found.
+
+ Testing cipher categories 
+
+ NULL ciphers (no encryption)                      not offered (OK)
+ Anonymous NULL Ciphers (no authentication)        not offered (OK)
+ Export ciphers (w/o ADH+NULL)                     not offered (OK)
+ LOW: 64 Bit + DES, RC[2,4], MD5 (w/o export)      not offered (OK)
+ Triple DES Ciphers / IDEA                         not offered
+ Obsoleted CBC ciphers (AES, ARIA etc.)            not offered
+ Strong encryption (AEAD ciphers) with no FS       not offered
+ Forward Secrecy strong encryption (AEAD ciphers)  offered (OK)
+
+
+ Testing server's cipher preferences 
+
+ Has server cipher order?     yes (OK) -- TLS 1.3 and below
+ Negotiated protocol          TLSv1.3
+ Negotiated cipher            TLS_AES_256_GCM_SHA384, 253 bit ECDH (X25519)
+ Cipher per protocol
+
+Hexcode  Cipher Suite Name (OpenSSL)       KeyExch.   Encryption  Bits     Cipher Suite Name (IANA/RFC)
+-----------------------------------------------------------------------------------------------------------------------------
+SSLv2
+ - 
+SSLv3
+ - 
+TLSv1
+ - 
+TLSv1.1
+ - 
+TLSv1.2 (server order)
+ xc02f   ECDHE-RSA-AES128-GCM-SHA256       ECDH 253   AESGCM      128      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256              
+ xc030   ECDHE-RSA-AES256-GCM-SHA384       ECDH 253   AESGCM      256      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384              
+ xcca8   ECDHE-RSA-CHACHA20-POLY1305       ECDH 253   ChaCha20    256      TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256        
+ x9e     DHE-RSA-AES128-GCM-SHA256         DH 4096    AESGCM      128      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256                
+ x9f     DHE-RSA-AES256-GCM-SHA384         DH 4096    AESGCM      256      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384                
+TLSv1.3 (server order)
+ x1302   TLS_AES_256_GCM_SHA384            ECDH 253   AESGCM      256      TLS_AES_256_GCM_SHA384                             
+ x1303   TLS_CHACHA20_POLY1305_SHA256      ECDH 253   ChaCha20    256      TLS_CHACHA20_POLY1305_SHA256                       
+ x1301   TLS_AES_128_GCM_SHA256            ECDH 253   AESGCM      128      TLS_AES_128_GCM_SHA256                             
+ x1304   TLS_AES_128_CCM_SHA256            ECDH 253   AESCCM      128      TLS_AES_128_CCM_SHA256                             
+
+
+ Testing robust forward secrecy (FS) -- omitting Null Authentication/Encryption, 3DES, RC4 
+
+ FS is offered (OK)           TLS_AES_256_GCM_SHA384 TLS_CHACHA20_POLY1305_SHA256 ECDHE-RSA-AES256-GCM-SHA384 DHE-RSA-AES256-GCM-SHA384
+                              ECDHE-RSA-CHACHA20-POLY1305 TLS_AES_128_GCM_SHA256 TLS_AES_128_CCM_SHA256 ECDHE-RSA-AES128-GCM-SHA256
+                              DHE-RSA-AES128-GCM-SHA256 
+ Elliptic curves offered:     prime256v1 secp384r1 secp521r1 X25519 X448 
+ DH group offered:            Unknown DH group (4096 bits)
+
+ Testing server defaults (Server Hello) 
+
+ TLS extensions (standard)    "renegotiation info/#65281" "server name/#0" "EC point formats/#11" "status request/#5" "next protocol/#13172"
+                              "supported versions/#43" "key share/#51" "supported_groups/#10" "max fragment length/#1"
+                              "application layer protocol negotiation/#16" "extended master secret/#23"
+ Session Ticket RFC 5077 hint no -- no lifetime advertised
+ SSL Session ID support       yes
+ Session Resumption           Tickets no, ID: yes
+ TLS clock skew               Random values, no fingerprinting possible 
+ Certificate Compression      none
+ Client Authentication        none
+ Signature Algorithm          SHA256 with RSA
+ Server key size              RSA 4096 bits (exponent is 65537)
+ Server key usage             Digital Signature, Key Encipherment
+ Server extended key usage    TLS Web Server Authentication, TLS Web Client Authentication
+ Serial                       03CEF26A6AFA41C40C8C2A13E05250A27142 (OK: length 18)
+ Fingerprints                 SHA1 0ABED1E5D41764AE8C02A00DFC9B0C4D6F4002A4
+                              SHA256 B377EAA9D6560606BB37B49AC64C5649A56E509615C0830FF5BF22623F192B34
+ Common Name (CN)             *.bfg-10k.ru 
+ subjectAltName (SAN)         *.bfg-10k.ru bfg-10k.ru 
+ Trust (hostname)             Ok via SAN wildcard and CN wildcard (same w/o SNI)
+ Chain of trust               Ok   
+ EV cert (experimental)       no 
+ Certificate Validity (UTC)   expires < 15 days (9) (2021-09-20 00:46 --> 2021-12-19 00:46)
+ ETS/"eTLS", visibility info  not present
+ Certificate Revocation List  --
+ OCSP URI                     http://r3.o.lencr.org
+ OCSP stapling                offered, not revoked
+ OCSP must staple extension   --
+ DNS CAA RR (experimental)    not offered
+ Certificate Transparency     yes (certificate extension)
+ Certificates provided        3
+ Issuer                       R3 (Let's Encrypt from US)
+ Intermediate cert validity   #1: ok > 40 days (2025-09-15 16:00). R3 <-- ISRG Root X1
+                              #2: ok > 40 days (2024-09-30 18:14). ISRG Root X1 <-- DST Root CA X3
+ Intermediate Bad OCSP (exp.) Ok
+
+
+ Testing HTTP header response @ "/" 
+
+ HTTP Status Code             302 Found, redirecting to "https://wiki.bfg-10k.ru/doku.php"
+ HTTP clock skew              0 sec from localtime
+ Strict Transport Security    730 days=63072000 s, includeSubDomains
+ Public Key Pinning           --
+ Server banner                nginx
+ Application banner           --
+ Cookie(s)                    2 issued: 2/2 secure, 2/2 HttpOnly -- maybe better try target URL of 30x
+ Security headers             X-Frame-Options: SAMEORIGIN
+                              X-Content-Type-Options: nosniff
+                              Content-Security-Policy: default-src https://wiki.bfg-10k.ru https://wiki-be.bfg-10k.ru data: 'unsafe-inline'
+                                'unsafe-eval'; img-src *;object-src 'none';
+                              Permissions-Policy: geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(),
+                                magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=();
+                              X-XSS-Protection: 1
+                              Referrer-Policy: strict-origin
+                              Cache-Control: no-store, no-cache, must-revalidate
+                              Pragma: no-cache
+ Reverse Proxy banner         --
+
+
+ Testing vulnerabilities 
+
+ Heartbleed (CVE-2014-0160)                not vulnerable (OK), no heartbeat extension
+ CCS (CVE-2014-0224)                       not vulnerable (OK)
+ Ticketbleed (CVE-2016-9244), experiment.  not vulnerable (OK), no session ticket extension
+ ROBOT                                     Server does not support any cipher suites that use RSA key transport
+ Secure Renegotiation (RFC 5746)           supported (OK)
+ Secure Client-Initiated Renegotiation     not vulnerable (OK)
+ CRIME, TLS (CVE-2012-4929)                not vulnerable (OK)
+ BREACH (CVE-2013-3587)                    no gzip/deflate/compress/br HTTP compression (OK)  - only supplied "/" tested
+ POODLE, SSL (CVE-2014-3566)               not vulnerable (OK), no SSLv3 support
+ TLS_FALLBACK_SCSV (RFC 7507)              No fallback possible (OK), no protocol below TLS 1.2 offered
+ SWEET32 (CVE-2016-2183, CVE-2016-6329)    not vulnerable (OK)
+ FREAK (CVE-2015-0204)                     not vulnerable (OK)
+ DROWN (CVE-2016-0800, CVE-2016-0703)      not vulnerable on this host and port (OK)
+                                           make sure you don't use this certificate elsewhere with SSLv2 enabled services
+                                           https://censys.io/ipv4?q=B377EAA9D6560606BB37B49AC64C5649A56E509615C0830FF5BF22623F192B34 could help you to find out
+ LOGJAM (CVE-2015-4000), experimental      not vulnerable (OK): no DH EXPORT ciphers, no common prime detected
+ BEAST (CVE-2011-3389)                     not vulnerable (OK), no SSL3 or TLS1
+ LUCKY13 (CVE-2013-0169), experimental     not vulnerable (OK)
+ Winshock (CVE-2014-6321), experimental    not vulnerable (OK)
+ RC4 (CVE-2013-2566, CVE-2015-2808)        no RC4 ciphers detected (OK)
+
+
+ Running client simulations (HTTP) via sockets 
+
+ Browser                      Protocol  Cipher Suite Name (OpenSSL)       Forward Secrecy
+------------------------------------------------------------------------------------------------
+ Android 4.4.2                TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 5.0.0                TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 6.0                  TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 7.0 (native)         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 8.1 (native)         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Android 9.0 (native)         TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Android 10.0 (native)        TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Chrome 74 (Win 10)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Chrome 79 (Win 10)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Firefox 66 (Win 8.1/10)      TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Firefox 71 (Win 10)          TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ IE 6 XP                      No connection
+ IE 8 Win 7                   No connection
+ IE 8 XP                      No connection
+ IE 11 Win 7                  TLSv1.2   DHE-RSA-AES128-GCM-SHA256         4096 bit DH  
+ IE 11 Win 8.1                TLSv1.2   DHE-RSA-AES128-GCM-SHA256         4096 bit DH  
+ IE 11 Win Phone 8.1          No connection
+ IE 11 Win 10                 TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Edge 15 Win 10               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Edge 17 (Win 10)             TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Opera 66 (Win 10)            TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Safari 9 iOS 9               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 9 OS X 10.11          TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 10 OS X 10.12         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 12.1 (iOS 12.2)       TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Safari 13.0 (macOS 10.14.6)  TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Apple ATS 9 iOS 9            TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Java 6u45                    No connection
+ Java 7u25                    No connection
+ Java 8u161                   TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Java 11.0.2 (OpenJDK)        TLSv1.3   TLS_AES_256_GCM_SHA384            256 bit ECDH (P-256)
+ Java 12.0.1 (OpenJDK)        TLSv1.3   TLS_AES_256_GCM_SHA384            256 bit ECDH (P-256)
+ OpenSSL 1.0.2e               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ OpenSSL 1.1.0l (Debian)      TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ OpenSSL 1.1.1d (Debian)      TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Thunderbird (68.3)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+
+
+ Rating (experimental) 
+
+ Rating specs (not complete)  SSL Labs's 'SSL Server Rating Guide' (version 2009q from 2020-01-30)
+ Specification documentation  https://github.com/ssllabs/research/wiki/SSL-Server-Rating-Guide
+ Protocol Support (weighted)  100 (30)
+ Key Exchange     (weighted)  100 (30)
+ Cipher Strength  (weighted)  90 (36)
+ Final Score                  96
+ Overall Grade                A+
+
+ Done 2021-12-09 09:34:04 [  58s] -->> aaa.bbb.ccc.ddd:443 (wiki.bfg-10k.ru) <<--
+
+----------------------------------------------------------------------------------------------
+ Start 2021-12-09 09:34:04        -->> [2001:470:1f0b:578::36]:443 (wiki.bfg-10k.ru) <<--
+
+ Further IP addresses:         aaa.bbb.ccc.ddd 
+ rDNS (2001:470:1f0b:578::36): bfg-10k.ru.
+ Service detected:             HTTP
+
+
+ Testing protocols via sockets except NPN+ALPN 
+
+ SSLv2      not offered (OK)
+ SSLv3      not offered (OK)
+ TLS 1      not offered
+ TLS 1.1    not offered
+ TLS 1.2    offered (OK)
+ TLS 1.3    offered (OK): final
+ NPN/SPDY   h2, http/1.1 (advertised)
+ ALPN/HTTP2 h2, http/1.1 (offered)
+
+ Testing for server implementation bugs 
+
+ No bugs found.
+
+ Testing cipher categories 
+
+ NULL ciphers (no encryption)                      not offered (OK)
+ Anonymous NULL Ciphers (no authentication)        not offered (OK)
+ Export ciphers (w/o ADH+NULL)                     not offered (OK)
+ LOW: 64 Bit + DES, RC[2,4], MD5 (w/o export)      not offered (OK)
+ Triple DES Ciphers / IDEA                         not offered
+ Obsoleted CBC ciphers (AES, ARIA etc.)            not offered
+ Strong encryption (AEAD ciphers) with no FS       not offered
+ Forward Secrecy strong encryption (AEAD ciphers)  offered (OK)
+
+
+ Testing server's cipher preferences 
+
+ Has server cipher order?     yes (OK) -- TLS 1.3 and below
+ Negotiated protocol          TLSv1.3
+ Negotiated cipher            TLS_AES_256_GCM_SHA384, 253 bit ECDH (X25519)
+ Cipher per protocol
+
+Hexcode  Cipher Suite Name (OpenSSL)       KeyExch.   Encryption  Bits     Cipher Suite Name (IANA/RFC)
+-----------------------------------------------------------------------------------------------------------------------------
+SSLv2
+ - 
+SSLv3
+ - 
+TLSv1
+ - 
+TLSv1.1
+ - 
+TLSv1.2 (server order)
+ xc02f   ECDHE-RSA-AES128-GCM-SHA256       ECDH 253   AESGCM      128      TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256              
+ xc030   ECDHE-RSA-AES256-GCM-SHA384       ECDH 253   AESGCM      256      TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384              
+ xcca8   ECDHE-RSA-CHACHA20-POLY1305       ECDH 253   ChaCha20    256      TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256        
+ x9e     DHE-RSA-AES128-GCM-SHA256         DH 4096    AESGCM      128      TLS_DHE_RSA_WITH_AES_128_GCM_SHA256                
+ x9f     DHE-RSA-AES256-GCM-SHA384         DH 4096    AESGCM      256      TLS_DHE_RSA_WITH_AES_256_GCM_SHA384                
+TLSv1.3 (server order)
+ x1302   TLS_AES_256_GCM_SHA384            ECDH 253   AESGCM      256      TLS_AES_256_GCM_SHA384                             
+ x1303   TLS_CHACHA20_POLY1305_SHA256      ECDH 253   ChaCha20    256      TLS_CHACHA20_POLY1305_SHA256                       
+ x1301   TLS_AES_128_GCM_SHA256            ECDH 253   AESGCM      128      TLS_AES_128_GCM_SHA256                             
+ x1304   TLS_AES_128_CCM_SHA256            ECDH 253   AESCCM      128      TLS_AES_128_CCM_SHA256                             
+
+
+ Testing robust forward secrecy (FS) -- omitting Null Authentication/Encryption, 3DES, RC4 
+
+ FS is offered (OK)           TLS_AES_256_GCM_SHA384 TLS_CHACHA20_POLY1305_SHA256 ECDHE-RSA-AES256-GCM-SHA384 DHE-RSA-AES256-GCM-SHA384
+                              ECDHE-RSA-CHACHA20-POLY1305 TLS_AES_128_GCM_SHA256 TLS_AES_128_CCM_SHA256 ECDHE-RSA-AES128-GCM-SHA256
+                              DHE-RSA-AES128-GCM-SHA256 
+ Elliptic curves offered:     prime256v1 secp384r1 secp521r1 X25519 X448 
+ DH group offered:            Unknown DH group (4096 bits)
+
+ Testing server defaults (Server Hello) 
+
+ TLS extensions (standard)    "renegotiation info/#65281" "server name/#0" "EC point formats/#11" "status request/#5" "next protocol/#13172"
+                              "supported versions/#43" "key share/#51" "supported_groups/#10" "max fragment length/#1"
+                              "application layer protocol negotiation/#16" "extended master secret/#23"
+ Session Ticket RFC 5077 hint no -- no lifetime advertised
+ SSL Session ID support       yes
+ Session Resumption           Tickets no, ID: yes
+ TLS clock skew               Random values, no fingerprinting possible 
+ Certificate Compression      none
+ Client Authentication        none
+ Signature Algorithm          SHA256 with RSA
+ Server key size              RSA 4096 bits (exponent is 65537)
+ Server key usage             Digital Signature, Key Encipherment
+ Server extended key usage    TLS Web Server Authentication, TLS Web Client Authentication
+ Serial                       03CEF26A6AFA41C40C8C2A13E05250A27142 (OK: length 18)
+ Fingerprints                 SHA1 0ABED1E5D41764AE8C02A00DFC9B0C4D6F4002A4
+                              SHA256 B377EAA9D6560606BB37B49AC64C5649A56E509615C0830FF5BF22623F192B34
+ Common Name (CN)             *.bfg-10k.ru 
+ subjectAltName (SAN)         *.bfg-10k.ru bfg-10k.ru 
+ Trust (hostname)             Ok via SAN wildcard and CN wildcard (same w/o SNI)
+ Chain of trust               Ok   
+ EV cert (experimental)       no 
+ Certificate Validity (UTC)   expires < 15 days (9) (2021-09-20 00:46 --> 2021-12-19 00:46)
+ ETS/"eTLS", visibility info  not present
+ Certificate Revocation List  --
+ OCSP URI                     http://r3.o.lencr.org
+ OCSP stapling                offered, not revoked
+ OCSP must staple extension   --
+ DNS CAA RR (experimental)    not offered
+ Certificate Transparency     yes (certificate extension)
+ Certificates provided        3
+ Issuer                       R3 (Let's Encrypt from US)
+ Intermediate cert validity   #1: ok > 40 days (2025-09-15 16:00). R3 <-- ISRG Root X1
+                              #2: ok > 40 days (2024-09-30 18:14). ISRG Root X1 <-- DST Root CA X3
+ Intermediate Bad OCSP (exp.) Ok
+
+
+ Testing HTTP header response @ "/" 
+
+ HTTP Status Code             302 Found, redirecting to "https://wiki.bfg-10k.ru/doku.php"
+ HTTP clock skew              0 sec from localtime
+ Strict Transport Security    730 days=63072000 s, includeSubDomains
+ Public Key Pinning           --
+ Server banner                nginx
+ Application banner           --
+ Cookie(s)                    2 issued: 2/2 secure, 2/2 HttpOnly -- maybe better try target URL of 30x
+ Security headers             X-Frame-Options: SAMEORIGIN
+                              X-Content-Type-Options: nosniff
+                              Content-Security-Policy: default-src https://wiki.bfg-10k.ru https://wiki-be.bfg-10k.ru data: 'unsafe-inline'
+                                'unsafe-eval'; img-src *;object-src 'none';
+                              Permissions-Policy: geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(),
+                                magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=();
+                              X-XSS-Protection: 1
+                              Referrer-Policy: strict-origin
+                              Cache-Control: no-store, no-cache, must-revalidate
+                              Pragma: no-cache
+ Reverse Proxy banner         --
+
+
+ Testing vulnerabilities 
+
+ Heartbleed (CVE-2014-0160)                not vulnerable (OK), no heartbeat extension
+ CCS (CVE-2014-0224)                       not vulnerable (OK)
+ Ticketbleed (CVE-2016-9244), experiment.  not vulnerable (OK), no session ticket extension
+ ROBOT                                     Server does not support any cipher suites that use RSA key transport
+ Secure Renegotiation (RFC 5746)           supported (OK)
+ Secure Client-Initiated Renegotiation     not vulnerable (OK)
+ CRIME, TLS (CVE-2012-4929)                not vulnerable (OK)
+ BREACH (CVE-2013-3587)                    no gzip/deflate/compress/br HTTP compression (OK)  - only supplied "/" tested
+ POODLE, SSL (CVE-2014-3566)               not vulnerable (OK), no SSLv3 support
+ TLS_FALLBACK_SCSV (RFC 7507)              No fallback possible (OK), no protocol below TLS 1.2 offered
+ SWEET32 (CVE-2016-2183, CVE-2016-6329)    not vulnerable (OK)
+ FREAK (CVE-2015-0204)                     not vulnerable (OK)
+ DROWN (CVE-2016-0800, CVE-2016-0703)      not vulnerable on this host and port (OK)
+                                           make sure you don't use this certificate elsewhere with SSLv2 enabled services
+                                           https://censys.io/ipv4?q=B377EAA9D6560606BB37B49AC64C5649A56E509615C0830FF5BF22623F192B34 could help you to find out
+ LOGJAM (CVE-2015-4000), experimental      not vulnerable (OK): no DH EXPORT ciphers, no common prime detected
+ BEAST (CVE-2011-3389)                     not vulnerable (OK), no SSL3 or TLS1
+ LUCKY13 (CVE-2013-0169), experimental     not vulnerable (OK)
+ Winshock (CVE-2014-6321), experimental    not vulnerable (OK)
+ RC4 (CVE-2013-2566, CVE-2015-2808)        no RC4 ciphers detected (OK)
+
+
+ Running client simulations (HTTP) via sockets 
+
+ Browser                      Protocol  Cipher Suite Name (OpenSSL)       Forward Secrecy
+------------------------------------------------------------------------------------------------
+ Android 4.4.2                TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 5.0.0                TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 6.0                  TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 7.0 (native)         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Android 8.1 (native)         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Android 9.0 (native)         TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Android 10.0 (native)        TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Chrome 74 (Win 10)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Chrome 79 (Win 10)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Firefox 66 (Win 8.1/10)      TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Firefox 71 (Win 10)          TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ IE 6 XP                      No connection
+ IE 8 Win 7                   No connection
+ IE 8 XP                      No connection
+ IE 11 Win 7                  TLSv1.2   DHE-RSA-AES128-GCM-SHA256         4096 bit DH  
+ IE 11 Win 8.1                TLSv1.2   DHE-RSA-AES128-GCM-SHA256         4096 bit DH  
+ IE 11 Win Phone 8.1          No connection
+ IE 11 Win 10                 TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Edge 15 Win 10               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Edge 17 (Win 10)             TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ Opera 66 (Win 10)            TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Safari 9 iOS 9               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 9 OS X 10.11          TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 10 OS X 10.12         TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Safari 12.1 (iOS 12.2)       TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Safari 13.0 (macOS 10.14.6)  TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Apple ATS 9 iOS 9            TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Java 6u45                    No connection
+ Java 7u25                    No connection
+ Java 8u161                   TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ Java 11.0.2 (OpenJDK)        TLSv1.3   TLS_AES_256_GCM_SHA384            256 bit ECDH (P-256)
+ Java 12.0.1 (OpenJDK)        TLSv1.3   TLS_AES_256_GCM_SHA384            256 bit ECDH (P-256)
+ OpenSSL 1.0.2e               TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       256 bit ECDH (P-256)
+ OpenSSL 1.1.0l (Debian)      TLSv1.2   ECDHE-RSA-AES128-GCM-SHA256       253 bit ECDH (X25519)
+ OpenSSL 1.1.1d (Debian)      TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+ Thunderbird (68.3)           TLSv1.3   TLS_AES_256_GCM_SHA384            253 bit ECDH (X25519)
+
+
+ Rating (experimental) 
+
+ Rating specs (not complete)  SSL Labs's 'SSL Server Rating Guide' (version 2009q from 2020-01-30)
+ Specification documentation  https://github.com/ssllabs/research/wiki/SSL-Server-Rating-Guide
+ Protocol Support (weighted)  100 (30)
+ Key Exchange     (weighted)  100 (30)
+ Cipher Strength  (weighted)  90 (36)
+ Final Score                  96
+ Overall Grade                A+
+
+ Done 2021-12-09 09:35:00 [ 114s] -->> [2001:470:1f0b:578::36]:443 (wiki.bfg-10k.ru) <<--
+
+----------------------------------------------------------------------------------------------
+Done testing now all IP addresses (on port 443): aaa.bbb.ccc.ddd 2001:470:1f0b:578::36
+

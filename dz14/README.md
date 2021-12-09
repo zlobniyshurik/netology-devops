@@ -133,7 +133,7 @@ server {
 *Проверьте на TLS уязвимости произвольный сайт в интернете.*  
   
 Проверил один из подшефных сайтов **wiki.bfg-10k.ru**:  
-<https://github.com/zlobniyshurik/netology-devops/tree/master/dz14/test.html>  
+<https://github.com/zlobniyshurik/netology-devops/tree/master/dz14/test.log>  
   
 Итог: **враги не пройдут!**  
 
