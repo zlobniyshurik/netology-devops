@@ -150,6 +150,29 @@ server {
 
 Задача 6
 --------
+*Переименуйте файлы ключей из задания 5. Настройте файл конфигурации SSH клиента, так чтобы вход  
+на удаленный сервер осуществлялся по имени сервера.*  
+  
+Переименовываем ключи:  
+```bash
+root@vagrant:/home/vagrant# mv ~/.ssh/id_ed25519 ~/.ssh/id_test
+```
+  
+Правим SSH-конфиг:  
+```bash
+root@vagrant:/home/vagrant# vi ~/.ssh/config
+```
+  
+И получаем примерно такой файл конфига:  
+```bash
+Host localhost
+HostName localhost
+IdentityFile ~/.ssh/id_test
+User root
+```
+  
+Заходим по ключу сами на себя:  
+![Вход по ключу](/dz14/pic/dz14_6.png)
 
 
 Задача 7
