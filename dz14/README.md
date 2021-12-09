@@ -90,7 +90,7 @@ server {
         add_header Content-Security-Policy "default-src https: data: ; object-src 'none';" always;
 
         #Указываем то, что наш сайт никогда использовать не будет
-        add_header Permissions-Policy "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer
+        add_header Permissions-Policy "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=();";
 
         #######################
         # Остальные настройки #
