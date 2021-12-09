@@ -3,9 +3,9 @@
 ## version testssl: 3.1dev beac382 from 2021-12-08
 ## version openssl: "1.0.2-chacha" from "Jan 18 17:12:17 2019")
 
-Testing all IPv4 addresses (port 443): 192.168.1.36 2001:470:1f0b:578::36
+Testing all IPv4 addresses (port 443): aaa.bbb.ccc.ddd 2001:470:1f0b:578::36
 ----------------------------------------------------------------------------------------------
- Start 2021-12-09 09:33:09        -->> 192.168.1.36:443 (wiki.bfg-10k.ru) <<--
+ Start 2021-12-09 09:33:09        -->> aaa.bbb.ccc.ddd:443 (wiki.bfg-10k.ru) <<--
 
  Further IP addresses:   2001:470:1f0b:578::36 
  rDNS (aaa.bbb.ccc.ddd):    bfg-10k.ru.
