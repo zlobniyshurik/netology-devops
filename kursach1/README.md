@@ -303,7 +303,7 @@ work (active)
   target: default
   icmp-block-inversion: no
   interfaces: 
-  sources: 192.168.1.99
+  sources: 192.168.xxx.yyy
   services: ssh
   ports: 
   protocols: 
