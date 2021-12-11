@@ -403,10 +403,44 @@ vault secrets tune -max-lease-ttl=87600h pki
 + Генерируем **root**-сертификат и сохраняем его в **CA_cert.crt**:  
 ```bash
 vault write -field=certificate pki/root/generate/internal \
-    common_name="example.com" \
+    common_name="experimental.mydomain.tld" \
     ttl=87600h > CA_cert.crt
 ```
   
 + Настраиваем URLы для CA и CRL:  
 ![](/kursach1/pic/k1_4_2.png)
+  
+### Генерируем промежуточный сертификат
+  
++ Включаем **pki**-движок для **pki_int**:  
+```bash
+vault secrets enable -path=pki_int pki
+```
+  
++ Выставляем срок жизни промежуточных сертификатов в 5 лет:  
+```bash
+vault secrets tune -max-lease-ttl=43800h pki_int
+```
+  
++ Генерируем промежуточный сертификат и записываем Certificate Signing Request в **pki_intermediate.csr**:  
+```bash
+vault write -format=json pki_int/intermediate/generate/internal \
+     common_name="experimental.mydomain.tld Intermediate Authority" \
+     | jq -r '.data.csr' > pki_intermediate.csr
+```
+  
++ Подписываем промежуточный сертификат приватным ключом корневого сертификата и сохраняем  
+результат в **intermediate.cert.pem**:  
+```bash
+vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr \
+     format=pem_bundle ttl="43800h" \
+     | jq -r '.data.certificate' > intermediate.cert.pem
+
+```
+  
++ После того, как Certificate Signing Request подписан и корневой центр авторизации вернул сертификат,  
+его можно импортировать в **vault**:  
+![](/kursach1/pic/k1_4_3.png)
+  
+### Создаем роли
   
