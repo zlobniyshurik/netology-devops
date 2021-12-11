@@ -354,6 +354,54 @@ dnf install vault
 ```
 + Проверяем, что **vault** установился:  
 ![](/kursach1/pic/k1_3_1.png)
+  
+### Правка конфигов
+  
++ Правим конфиг волта **etc/vault.d/vault.hcl** на работу через HTTP и с хранением информации на диске  
+Внутри должно быть следующее:  
+```bash
+# Full configuration options can be found at https://www.vaultproject.io/docs/configuration
+
+ui = false
+
+#mlock = true
+#disable_mlock = true
+
+storage "file" {
+  path = "/opt/vault/data"
+}
+
+# HTTP listener
+listener "tcp" {
+  address = "127.0.0.1:8200"
+  tls_disable = 1
+}
+
+# HTTPS listener
+#listener "tcp" {
+#  address       = "127.0.0.1:8200"
+#  tls_cert_file = "/opt/vault/tls/tls.crt"
+#  tls_key_file  = "/opt/vault/tls/tls.key"
+#}
+```
+  
++ Правим в **systemd** юнит волта, дабы каждый раз в скриптах не писать  
+```export VAULT_ADDR=http://127.0.0.1:8200```:  
+  
+1. Открываем на редактирование unit-файл - ```systemctl edit vault --full```  
+  
+2. В секцию **[Service]** добавляем строчку ```PassEnvironment=VAULT_ADDR=http://127.0.0.1:8200```  
+  
+### Запуск сервиса
+  
++ Запускаем сервис волта:  
+```bash
+systemctl enable vault
+systemctl start vault
+```
+  
++ Проверяем ещё раз волт на работоспособность через ```systemctl status vault```:  
+Если все нормально, то сервис должен успешно запуститься без ошибок.  
 
 Задача 4
 --------
