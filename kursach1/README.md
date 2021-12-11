@@ -390,3 +390,23 @@ export VAULT_TOKEN=root
   
 ### Генерируем корневой сертификат
   
++ Запускаем **pki**-движок:  
+```bash
+vault secrets enable pki
+```
+  
++ выставляем срок жизни сертификатов в 10 лет:  
+```bash
+vault secrets tune -max-lease-ttl=87600h pki
+```
+  
++ Генерируем **root**-сертификат и сохраняем его в **CA_cert.crt**:  
+```bash
+vault write -field=certificate pki/root/generate/internal \
+    common_name="example.com" \
+    ttl=87600h > CA_cert.crt
+```
+  
++ Настраиваем URLы для CA и CRL:  
+![](/kursach1/pic/k1_4_2.png)
+  
