@@ -13,7 +13,9 @@
 + На основе готового шаблона создаём клонированием виртуалку **Kursach**  
   
 + Через **nmtui** вбиваем статические IPv4/IPv6-адреса, адреса шлюза и DNS'а в сетевые настройки  
-и там же меняем имя виртуалки на **kursach.mydomain.tld**  
+и там же меняем имя виртуалки на **kursach.experimental.mydomain.tld**  
+*(имя специально взял подлиннее, чтобы не попадало в имена \*.mydomain.tld,  
+на которые уже есть реальный сертификат от Let's Encrypt)*  
   
 + Перезапускаем систему через **reboot**  
   
@@ -28,7 +30,7 @@ rm -f /etc/ssh/ssh_host*
 ssh-keygen -A
 ```
   
-+ Всё, дальше уже можно с комфортом работать с виртуалкой через SSH  
++ Всё, дальше уже можно с комфортом работать с виртуалкой через **SSH**  
 
 Пункт 2
 -------
@@ -41,7 +43,7 @@ ssh-keygen -A
   
 У нас уже есть установленный по умолчанию **firewalld** - вот им и будем пользоваться.  
   
-Смотрим текущую ситуацию через ```bash firewall-cmd --list-all-zones```:  
+Смотрим текущую ситуацию через ```firewall-cmd --list-all-zones```:  
 ```bash
 block
   target: %%REJECT%%
@@ -323,5 +325,22 @@ work (active)
 
 Задача 3
 --------
-*Установите* ***hashicorp vault***
+*Установите* ***hashicorp vault***  
+  
++ Ставим **yum-utils**:  
+```bash
+dnf install yum-utils
+```
++ Подключаем репозиторий с Hashicorp Vault:  
+```bash
+yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+```
++ Устанавливаем **hashicorp vault**:  
+```bash
+dnf install vault
+```
++ Проверяем, что **vault** установился:  
+![](/kursach1/pic/k1_3_1.png)
 
+Задача 4
+--------
