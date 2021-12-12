@@ -553,7 +553,9 @@ vault write -format=json pki/root/sign-intermediate csr=@pki_intermediate.csr fo
 # импортируем промежуточный сертификат обратно в волт
 vault write pki_int/intermediate/set-signed certificate=@intermediate.cert.pem
 ```
-
+  
++ Результат будет лежать в файле **certs/intermediate.cert.pem**
+  
 Задача 5
 --------
 *Установите корневой сертификат созданного центра сертификации в доверенные в хостовой системе*  
