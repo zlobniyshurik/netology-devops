@@ -26,3 +26,6 @@ vault secrets tune -max-lease-ttl=$MAXTTL pki
 
 #Генерим корневой сертификат в certs/CA_cert.crt
 vault write -field=certificate pki/root/generate/internal common_name=$DOMAIN ttl=$TTL > certs/CA_cert.crt
+
+#Конфигурируем пути для CA-сертификата и CRL (Certificate Revocation List)
+vault write pki/config/urls issuing_certificates="$VAULT_ADDR/v1/pki/ca" crl_distribution_points="$VAULT_ADDR/v1/pki/crl"
