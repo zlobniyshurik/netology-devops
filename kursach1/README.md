@@ -643,7 +643,7 @@ jq -r '.data.private_key' <<< "$RESULT" > certs/end_private_key.pem
 jq -r '.data.private_key_type' <<< "$RESULT" > certs/end_private_key_type
 ```
   
-Результат (ключи, сертификаты, серийники, даты) получим в папке **certs** в файлах **end\*.\* **
+Результат (ключи, сертификаты, серийники, даты) получим в папке **certs** в файлах **end\*.\***
   
 Задача 5
 --------
