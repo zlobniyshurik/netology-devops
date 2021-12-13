@@ -878,7 +878,7 @@ cp path.to/private.key /etc/certs/kursach/privkey.pem
 + Создаём цепочку сертификатов:  
 ```bash
 cat path.to/end_cert.crt > /etc/certs/kursach/fullchain.pem
-cat path.to/end_ca_chain >> kursach/fullchain.pem
+cat path.to/end_ca_chain >> /etc/certs/kursach/fullchain.pem
 ```
   
 ### Проверяем конфигурацию nginx
@@ -909,3 +909,55 @@ systemctl reload nginx
   
 Задача 9
 --------
+*Создайте скрипт, который будет генерировать новый сертификат в vault*  
+  
++ Скрипт апдейта сертификатов (живёт в одной папке со всеми вышеупомянутыми скриптами):  
+```bash
+#!/usr/bin/env bash
+
+##########################################
+# Скрипт для автообновления сертификатов #
+##########################################
+
+#Распечатываем волт
+echo "Vault unsealing..."
+./vault_unseal.sh
+
+#Логинимся в него под root`ом
+echo "Login to vault..."
+./vault_login.sh
+
+#Генерим новый сертификат
+echo "Create new certificate..."
+./gen_cert.sh
+
+#Запечатываем волт (кругом враги!)
+echo "Vault sealing..."
+./vault_seal.sh
+
+#Копируем свежий приватный ключ в /etc/certs/kursach
+echo "Private key copy..."
+cp ./certs/end_private_key.pem /etc/certs/kursach/privkey.pem
+
+#Создаём fullchain из нового сертификата и intermediate-сертификата в /etc/certs/kursach
+echo "Fullchain copy..."
+cat ./certs/end_cert.crt > /etc/certs/kursach/fullchain.pem
+cat ./certs/end_ca_chain >> /etc/certs/kursach/fullchain.pem
+
+#Перезагружаем конфиг nginx`а
+echo "Nginx reloading"
+systemctl reload nginx
+```
+  
+Задача 10
+---------
+*Поместите скрипт в crontab, чтобы сертификат обновлялся какого-то числа каждого месяца в удобное для вас время.*  
+  
+Ок, хочу запускать автообновление сертификатов первого числа каждого месяца в час ночи,  
+Скрипты лежат пачкой в каталоге **/root/hashicorp**  
+  
+Вписываем в **/etc/crontab** строчку:  
+```bash
+0 1 1 * * /root/hashicorp/update_cert.sh
+```
+
