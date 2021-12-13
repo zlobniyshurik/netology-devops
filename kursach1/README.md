@@ -696,3 +696,39 @@ systemctl status nginx
 
 Задача 7
 --------
+*настройте nginx на https, используя ранее подготовленный сертификат*  
+  
+### Создаём ключи Диффи-Хеллмана
+  
++ Генерируем 4096-битные ключи Диффи-Хеллмана:  
+```bash
+openssl dhparam -out /etc/ssl/certs/dhparam.pem 4096
+```
+  
+### Создаём веб-страничку
+  
++ Создаём папку под наш мега-сайт:  
+```bash
+mkdir -p /var/www/html/kursach
+```
+  
++ Создаём в этой папке файл странички **index.html** с содержимым вроде этого:  
+```html
+<html>
+    <head>
+	<title>Kursach</title>
+    </head>
+    <body>
+	<center><h1>!!!Kursach!!!</h1></center>
+    </body>
+</html>
+```
+  
++ Прописываем владельца **nginx:nginx** на наш каталог с сайтами:  
+```bash
+chown -R nginx:nginx /var/www
+```
+  
+### Меняем конфиги nginx'а на работу с нашей страничкой через HTTPS
+  
+  
