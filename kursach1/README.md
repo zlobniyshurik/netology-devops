@@ -731,4 +731,179 @@ chown -R nginx:nginx /var/www
   
 ### Меняем конфиги nginx'а на работу с нашей страничкой через HTTPS
   
++ Конфиг **/etc/nginx/nginx.conf**:  
+```nginx
+# For more information on configuration, see:
+#   * Official English Documentation: http://nginx.org/en/docs/
+#   * Official Russian Documentation: http://nginx.org/ru/docs/
+
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+# Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
+include /usr/share/nginx/modules/*.conf;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log /var/log/nginx/access.log main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 4096;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    server {
+        listen       80;
+        listen       [::]:80;
+        server_name  _;
+        return 301 https://$host$request_uri;
+        #root         /usr/share/nginx/html;
+
+        # Load configuration files for the default server block.
+        include /etc/nginx/default.d/*.conf;
+
+        error_page 404 /404.html;
+            location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+            location = /50x.html {
+        }
+    }
+
+    # Load modular configuration files from the /etc/nginx/conf.d directory.
+    # See http://nginx.org/en/docs/ngx_core_module.html#include
+    # for more information.
+    include /etc/nginx/conf.d/*.conf;
+
+}
+```
   
++ Конфиг **/etc/nginx/conf.d/_default.conf** (не забываем поменять имя домена):  
+```nginx
+server {
+        listen 443 ssl http2;
+
+        server_name localhost kursach.experimental.mydomain.tld;
+
+        #Задаем пути к файлам логов
+        access_log /var/log/nginx/access.log main;
+        error_log /var/log/nginx/error.log;
+
+        ###########################
+        # Настройки SSL для HTTPS #
+        ###########################
+
+        resolver 192.168.xxx.yyy;
+
+        # Указываем пути к сертификатам
+        ssl_certificate /etc/certs/kursach/fullchain.pem;
+        ssl_certificate_key /etc/certs/kursach/privkey.pem;
+
+        ssl_session_timeout 1d;
+        ssl_session_cache shared:MozSSL:10m;  # about 40000 sessions
+        ssl_session_tickets off;
+
+        # 4096-битный ключ Диффи-Хеллмана
+        ssl_dhparam /etc/pki/tls/certs/dhparam.pem;
+
+        # Указываем виды шифрования (тут секьюрно, но без фанатизма)
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+        ssl_prefer_server_ciphers on;
+
+        ###########################
+        # Усложняем жизнь хакерам #
+        ###########################
+
+        #Блокируем информацию по версии сервера
+        server_tokens off;
+
+        #Запрещаем отображение нашего сайта в фреймах
+        add_header X-Frame-Options "SAMEORIGIN" always;
+
+        # Трекинг с нашего сайта дальше нашего сайта не уйдёт
+        add_header Referrer-Policy "strict-origin";
+
+        #Чтобы браузеры не умничали сверх необходимого и не пытались найти, скажем, архив внутри картинки
+        # Есть жёстко заданный MIME-тип - ему и следуем.
+        add_header X-Content-Type-Options nosniff;
+
+        #Content Security Policy - одна из самых мощных (и проблемных) настроек.
+        #add_header Content-Security-Policy "default-src https: data: 'unsafe-inline' 'unsafe-eval'; object-src 'none';" always;
+        add_header Content-Security-Policy "default-src https: data: ; object-src 'none';" always;
+
+        #Указываем то, что наш сайт никогда использовать не будет
+        add_header Permissions-Policy "geolocation=(), midi=(), notifications=(), push=(), sync-xhr=(), microphone=(), camera=(), magnetometer=(), gyroscope=(), speaker=(), vibrate=(), fullscreen=(), payment=();";
+
+        #######################
+        # Остальные настройки #
+        #######################
+        index index.html index.htm;
+
+        ####################
+        # Пути к каталогам #
+        ####################
+
+        #Путь к корневому каталогу по умолчанию
+        root /usr/share/nginx/html;
+
+        location / {
+            root /var/www/html/kursach/;
+            #try_files $uri $uri/ =404;
+        }
+}
+```
+  
+### Подсовываем ключи и сертификаты
+  
++ Копируем приватный ключ:  
+```bash
+cp path.to/private.key /etc/certs/kursach/privkey.pem
+```
+  
++ Создаём цепочку сертификатов:  
+```bash
+cat path.to/end_cert.crt > /etc/certs/kursach/fullchain.pem
+cat path.to/end_ca_chain >> kursach/fullchain.pem
+```
+  
+### Проверяем конфигурацию nginx
+  
++ Проверяем конфигурацию через ```nginx -t```
+  
+### Перезапускаем nginx
+  
++ Перезагружаем конфигурацию **nginx**'а:  
+```bash
+systemctl reload nginx
+```
+  
+### Проверяем работоспособность HTTPS с нашими самопальными сертификатами
+  
++ Заходим с хост машины на наш сайт:  
+Видим примерно это:  
+![HTTPS](/kursach1/pic/https_demo.png)
+  
+В свойствах сертификата тоже явного криминала не видно:  
+![Закладка1](/kursach1/pic/firefox_cert_info1.png)
+  
+![Закладка2](/kursach1/pic/firefox_cert_info2.png)
+  
+![Закладка3](/kursach1/pic/firefox_cert_info3.png)
+  
+Задача 8
+--------
