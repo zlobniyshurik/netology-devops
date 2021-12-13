@@ -948,6 +948,8 @@ cat ./certs/end_ca_chain >> /etc/certs/kursach/fullchain.pem
 echo "Nginx reloading"
 systemctl reload nginx
 ```
+..
+*Скрипт проверен и реально выполняет свою работу - срок годности сертификата продлевается без ошибок*  
   
 Задача 10
 ---------
