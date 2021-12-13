@@ -892,7 +892,9 @@ cat path.to/end_ca_chain >> kursach/fullchain.pem
 systemctl reload nginx
 ```
   
-### Проверяем работоспособность HTTPS с нашими самопальными сертификатами
+Задача 8
+--------
+*Откройте в браузере на хосте https адрес страницы, которую обслуживает сервер nginx.*  
   
 + Заходим с хост машины на наш сайт:  
 Видим примерно это:  
@@ -905,5 +907,5 @@ systemctl reload nginx
   
 ![Закладка3](/kursach1/pic/firefox_cert_info3.png)
   
-Задача 8
+Задача 9
 --------
