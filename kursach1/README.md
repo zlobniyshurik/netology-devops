@@ -205,7 +205,8 @@ work
 ### Наши хотелки
   
 Хотелось бы ограничиться вообще двумя зонами:  
-+ **work** - с разрешённым доступом через **SSH** с определённого IP (админская машина)  
++ **work** - с разрешённым доступом через **SSH** с определённого IP (админская машина), здесь же разрешаем доступ  
+к **HTTP/HTTPS** (админу тоже надо работать с будущим веб-сайтом)  
   
 + **public** - с открытыми портами **80** (для HTTP) и **443** (для HTTPS) для доступа к сайту с любых IP-адресов,  
 стучащихся на сетевой интерфейс **enp1s0**  
@@ -233,11 +234,11 @@ cd /etc/firewalld/zones
 rename .xml .xml_backup *
 ```
 И, пока не перезапустили **firewalld**, оставшись без связи и настроек, срочно создаём зону **work**  
-для доступа через **SSH**, привязав её к админскому IP:  
-![](/kursach1/pic/k1_2_1.png)
+для доступа через **SSH, HTTP и HTTPS**, привязав её к админскому IP:  
+![](/kursach1/pic/setup_work_zone.png)
   
 Не забываем и про зону **public**, открыв порты для **HTTP(S)** и привязав зону к интерфейсу **enp1s0**:  
-![](/kursach1/pic/k1_2_2.png)
+![](/kursach1/pic/setup_public_zone.png)
   
 Перезагружаем фаервол:  
 ![](/kursach1/pic/k1_2_3.png)
@@ -315,7 +316,7 @@ work (active)
   icmp-block-inversion: no
   interfaces: 
   sources: 192.168.xxx.yyy
-  services: ssh
+  services: http https ssh
   ports: 
   protocols: 
   forward: no
@@ -651,12 +652,47 @@ jq -r '.data.private_key_type' <<< "$RESULT" > certs/end_private_key_type
   
 + Устанавливаем сертификат в доверенные:  
 ```bash
-trust anchor <Путь к сертификату>
+trust anchor path.to/certificate.crt
 ```
   
-+ Проверяем, что сертификат установился через ```bash trust list```:
++ Проверяем, что сертификат установился через ```trust list```:
 ![Check CA_cert on host](/kursach1/pic/check_CA_cert_install.png)  
 *Видим наш сертификат первым в списке*  
+  
++ Когда сертификат будет не нужен, удалим его через ```trust anchor --remove path.to/certificate.crt```  
 
 Задача 6
+--------
+*Установите* ***nginx***
+  
+### Установка nginx
+  
++ Проверяем репозитории на доступность более-менее актуальной версии **nginx**'а:  
+![check nginx repos](/kursach1/pic/module_list_nginx.png)
+  
++ Ставим распоследнюю версию:  
+```bash
+dnf module install nginx:1.20
+```
+  
++ Запускаем сервис:  
+```bash
+systemctl enable nginx
+systemctl start nginx
+```
+  
+### Проверка на работоспособность
+  
++ Проверяем сервис:  
+```bash
+systemctl status nginx
+```
+Получаем следующее:  
+![check nginx service](/kursach1/pic/check_nginx_service.png)
+  
++ Пытаемся зайти извне по HTTP:  
+![check HTTP](/kursach1/pic/check_http.png)
+*Как минимум, HTTP работает*  
+
+Задача 7
 --------
