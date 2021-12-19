@@ -43,12 +43,24 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+
+test_path = '~/Univercity/git/test'
+bash_command = ['cd ' + test_path, "git status"]
+result_os = os.popen(' && '.join(bash_command)).read()
+for result in result_os.split('\n'):
+    if result.find('изменено') != -1:
+        prepare_result = result.replace('\tизменено:      ', '')
+        print(f'{test_path}/{prepare_result}')
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+[shurik@megaboss ~]$ ./test.py
+~/Univercity/git/test/test/test.zzz
+~/Univercity/git/test/test2.txt
 ```
 
 ## Обязательная задача 3
