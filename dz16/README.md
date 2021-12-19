@@ -122,12 +122,49 @@ script путь_к_проверяемому_каталогу_git_репозит�
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import socket
+import time
+
+hosts = ["drive.google.com", "mail.google.com", "google.com"]
+
+spisok = {}
+
+while True:
+
+  #Проверяем хосты по списку
+  for host in hosts:
+    newip = socket.gethostbyname(host)
+
+    #Если хост ещё ни разу не проверялся - заносим в словарь
+    if host not in spisok:
+      spisok[host]=newip
+      print(f'Found new host {host} with ip={newip}')
+
+    #Проверяем - отличается ли старый IP от нового?
+    if newip != spisok[host]:
+      print(f'[ERROR] {host} IP mismatch: {spisok[host]} {newip}')
+      spisok[host] = newip
+
+  #Задержка в 5 секунд после каждого цикла опросов
+  time.sleep(5)
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+[shurik@megaboss ~]$ ./test2.py
+Found new host drive.google.com with ip=74.125.140.194
+Found new host mail.google.com with ip=142.250.185.165
+Found new host google.com with ip=142.250.185.78
+^CTraceback (most recent call last):
+  File "/home/shurik/./test2.py", line 27, in <module>
+    time.sleep(5)
+KeyboardInterrupt
+
+
+[shurik@megaboss ~]$ 
+
 ```
 
 ## Дополнительное задание (со звездочкой*) - необязательно к выполнению
