@@ -68,12 +68,53 @@ for result in result_os.split('\n'):
 
 ### Ваш скрипт:
 ```python
-???
+#!/usr/bin/env python3
+
+import os
+import sys
+import subprocess
+
+if (len(sys.argv)!= 2):
+    print("Балбесина! Скрипт запускается так:\nscript путь_к_проверяемому_каталогу_git_репозитория")
+    exit(1)
+
+test_path = sys.argv[1]
+
+if (not(os.path.isdir(test_path))):
+   print(f'Балбесина!\nКаталога "{test_path}" не существует или это вовсе не каталог!')
+   exit(1)
+
+os.chdir(test_path)
+
+process = subprocess.Popen([r'git','status'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+stdout, stderr = process.communicate()
+
+if stderr.find('не найден git репозиторий') !=-1:
+        print(f'Балбесина!\n "{test_path}" - это не каталог с git-репозиторием!')
+        exit(1)
+
+for result in stdout.split('\n'):
+    if result.find('изменено') != -1:
+        prepare_result = result.replace('\tизменено:      ', '')
+        print(f'{test_path}/{prepare_result}')
 ```
 
 ### Вывод скрипта при запуске при тестировании:
 ```
-???
+[shurik@megaboss ~]$ ./test.py
+Балбесина! Скрипт запускается так:
+script путь_к_проверяемому_каталогу_git_репозитория
+[shurik@megaboss ~]$ ./test.py /zzz
+Балбесина!
+Каталога "/zzz" не существует или это вовсе не каталог!
+[shurik@megaboss ~]$ ./test.py /tmp
+Балбесина!
+ "/tmp" - это не каталог с git-репозиторием!
+[shurik@megaboss ~]$ ./test.py ~/Univercity/git/test
+/home/shurik/Univercity/git/test/test/test.zzz
+/home/shurik/Univercity/git/test/test2.txt
+[shurik@megaboss ~]$ 
+
 ```
 
 ## Обязательная задача 4
