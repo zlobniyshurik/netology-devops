@@ -26,6 +26,6 @@ https://bitbucket.org/zlobniyshurik/netology-devops/src/master/
 
 Задача 4
 --------
-Собственно, поправил ***/dz03/README.md***
+Собственно, поправил ***/block1/dz03/README.md***
 
 ... и ещё разок поправил, в попытке настроить работу *PyCharm*`а через SSH
