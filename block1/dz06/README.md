@@ -14,11 +14,11 @@
 --------
 
 **vagrant**овский вариант виртуальной машины  
-![Vagrant_Ubuntu](/dz06/pic/Vagrant_VM_settings.png)
+![Vagrant_Ubuntu](/block1/dz06/pic/Vagrant_VM_settings.png)
   
 
 **дефолтный** вариант виртуалки под убунту  
-![Default_Ubuntu](/dz06/pic/Default_VM_settings.png)
+![Default_Ubuntu](/block1/dz06/pic/Default_VM_settings.png)
   
 
 Задача 6
@@ -71,7 +71,7 @@
 ---------
 
 Примерно так...
-![bash_path](/dz06/pic/bash_path.png)
+![bash_path](/block1/dz06/pic/bash_path.png)
 
 Задача 13
 ---------
