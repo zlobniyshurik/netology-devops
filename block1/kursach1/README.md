@@ -21,7 +21,7 @@
 + Перезапускаем систему через **reboot**  
   
 + Получаем примерно такую картинку:  
-![Виртуалка](/kursach1/pic/k1_1.png)
+![Виртуалка](/block1/kursach1/pic/k1_1.png)
   
 + Меняем пароль через **passwd**  
   
@@ -235,13 +235,13 @@ rename .xml .xml_backup *
 ```
 И, пока не перезапустили **firewalld**, оставшись без связи и настроек, срочно создаём зону **work**  
 для доступа через **SSH, HTTP и HTTPS**, привязав её к админскому IP:  
-![](/kursach1/pic/setup_work_zone.png)
+![](/block1/kursach1/pic/setup_work_zone.png)
   
 Не забываем и про зону **public**, открыв порты для **HTTP(S)** и привязав зону к интерфейсу **enp1s0**:  
-![](/kursach1/pic/setup_public_zone.png)
+![](/block1/kursach1/pic/setup_public_zone.png)
   
 Перезагружаем фаервол:  
-![](/kursach1/pic/k1_2_3.png)
+![](/block1/kursach1/pic/k1_2_3.png)
   
 ### Результат доработок
   
@@ -328,7 +328,7 @@ work (active)
 ```
   
 И, как минимум, пробиться на **SSH** с других машин, кроме админской, уже не получается - видим примерно это:  
-![](/kursach1/pic/k1_2_4.png)
+![](/block1/kursach1/pic/k1_2_4.png)
   
 ### Выводы по настройке firewalld
   
@@ -354,7 +354,7 @@ yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.
 dnf install vault
 ```
 + Проверяем, что **vault** установился:  
-![](/kursach1/pic/k1_3_1.png)
+![](/block1/kursach1/pic/k1_3_1.png)
   
 ### Правка конфигов
   
@@ -425,7 +425,7 @@ export VAULT_ADDR=http://127.0.0.1:8200
 vault operator init
 ```
 + Увидим что-то вроде этого:  
-![Vault Init](/kursach1/pic/vault_init.png)
+![Vault Init](/block1/kursach1/pic/vault_init.png)
   
 + Переписываем содержимое ключей в файлы **/vaultkeys/\*.key**  
   
@@ -656,7 +656,7 @@ trust anchor path.to/certificate.crt
 ```
   
 + Проверяем, что сертификат установился через ```trust list```:
-![Check CA_cert on host](/kursach1/pic/check_CA_cert_install.png)  
+![Check CA_cert on host](/block1/kursach1/pic/check_CA_cert_install.png)  
 *Видим наш сертификат первым в списке*  
   
 + Когда сертификат будет не нужен, удалим его через ```trust anchor --remove path.to/certificate.crt```  
@@ -668,7 +668,7 @@ trust anchor path.to/certificate.crt
 ### Установка nginx
   
 + Проверяем репозитории на доступность более-менее актуальной версии **nginx**'а:  
-![check nginx repos](/kursach1/pic/module_list_nginx.png)
+![check nginx repos](/block1/kursach1/pic/module_list_nginx.png)
   
 + Ставим распоследнюю версию:  
 ```bash
@@ -688,10 +688,10 @@ systemctl start nginx
 systemctl status nginx
 ```
 Получаем следующее:  
-![check nginx service](/kursach1/pic/check_nginx_service.png)
+![check nginx service](/block1/kursach1/pic/check_nginx_service.png)
   
 + Пытаемся зайти извне по HTTP:  
-![check HTTP](/kursach1/pic/check_http.png)
+![check HTTP](/block1/kursach1/pic/check_http.png)
 *Как минимум, HTTP работает*  
 
 Задача 7
@@ -898,14 +898,14 @@ systemctl reload nginx
   
 + Заходим с хост машины на наш сайт:  
 Видим примерно это:  
-![HTTPS](/kursach1/pic/https_demo.png)
+![HTTPS](/block1/kursach1/pic/https_demo.png)
   
 В свойствах сертификата тоже явного криминала не видно:  
-![Закладка1](/kursach1/pic/firefox_cert_info1.png)
+![Закладка1](/block1/kursach1/pic/firefox_cert_info1.png)
   
-![Закладка2](/kursach1/pic/firefox_cert_info2.png)
+![Закладка2](/block1/kursach1/pic/firefox_cert_info2.png)
   
-![Закладка3](/kursach1/pic/firefox_cert_info3.png)
+![Закладка3](/block1/kursach1/pic/firefox_cert_info3.png)
   
 Задача 9
 --------
