@@ -4,4 +4,4 @@
 Я ответил на опрос  
 Честно-честно!  
 
-![](/reflex1/pic/reflex1.png)
+![](/block1/reflex1/pic/reflex1.png)
