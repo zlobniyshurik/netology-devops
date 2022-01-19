@@ -5,19 +5,19 @@
 Задача 1
 --------
 **Terraform**
-![Terraform](/dz01/01/terraform.png)
+![Terraform](/block1/dz01/01/terraform.png)
 
 **Bash**
-![Bash](/dz01/01/bash.png)
+![Bash](/block1/dz01/01/bash.png)
 
 **Markdown**
-![Markdown](/dz01/01/markdown.png)
+![Markdown](/block1/dz01/01/markdown.png)
 
 **Yaml**
-![Yaml](/dz01/01/yaml.png)
+![Yaml](/block1/dz01/01/yaml.png)
 
 **Jsonnet**
-![Jsonnet](/dz01/01/jsonnet.png)
+![Jsonnet](/block1/dz01/01/jsonnet.png)
 
 Задача 2
 --------
