@@ -6,18 +6,18 @@
 *Проверьте список доступных сетевых интерфейсов на вашем компьютере. Какие команды есть для этого в Linux и в Windows?*  
   
 В Windows обычно это **ipconfig**:  
-![ipconfig](/dz12/pic/dz12_1_1.png)
+![ipconfig](/block1/dz12/pic/dz12_1_1.png)
   
 В линуксе вариантов больше:  
   
 **ifconfig**  
-![ifconfig](/dz12/pic/dz12_1_2.png)
+![ifconfig](/block1/dz12/pic/dz12_1_2.png)
   
 **ip**  
-![ip](/dz12/pic/dz12_1_3.png)
+![ip](/block1/dz12/pic/dz12_1_3.png)
   
 **networkctl**  
-![networkctl](/dz12/pic/dz12_1_4.png)
+![networkctl](/block1/dz12/pic/dz12_1_4.png)
   
 и ещё пачка других вариантов.  
 
@@ -196,10 +196,10 @@ iface bond0 inet static
 *Как проверить ARP таблицу в Linux, Windows? Как очистить ARP кеш полностью? Как из ARP таблицы удалить только один нужный IP?*  
   
 Посмотреть ARP-таблицу в Windows можно через **arp -a**:  
-![ARP win](/dz12/pic/dz12_7_1.png)
+![ARP win](/block1/dz12/pic/dz12_7_1.png)
   
 В линуксе посмотреть ARP-таблицу можно просто через **arp**:  
-![ARP linux](/dz12/pic/dz12_7_2.png)
+![ARP linux](/block1/dz12/pic/dz12_7_2.png)
   
 Очистка ARP-кэша в линуксе происходит примерно так:  
 ```bash
