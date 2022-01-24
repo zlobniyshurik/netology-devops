@@ -81,7 +81,7 @@ EXPOSE 80
 
 4. Создаём наш докер-образ, обозвав его **first_try**  
 *Получается как-то так:*  
-```bash
+```
 [root@juggernaut dockerbuild]# docker build . -t first_try
 Sending build context to Docker daemon  3.584kB
 Step 1/3 : FROM nginx:1.20.2-alpine
@@ -98,7 +98,7 @@ Successfully tagged first_try:latest
 ```
 
 5. Запускаем наш контейнер под более удобоваримым именем **my_nginx** и прокидываем порт с докерного 80 на хостовый 8080
-```bash
+```
 [root@juggernaut dockerbuild]# docker run --name my_nginx -d -p 8080:80 first_try
 f539d28fe5a3a219a825ac3a6b9873970a3f2e3cf8132db4ead2c13796e58293
 [root@juggernaut dockerbuild]#
@@ -109,7 +109,7 @@ f539d28fe5a3a219a825ac3a6b9873970a3f2e3cf8132db4ead2c13796e58293
 ![Результат](/block2/5.3/pic/dz5_3_1.png)
 
 7. Логинимся в докер
-```bash
+```
 [root@juggernaut dockerbuild]# docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: zlobniyshurik
@@ -128,7 +128,7 @@ Login Succeeded
 ```
 
 9. Отправляем готовый образ на hub.docker.com
-```bash
+```
 [root@juggernaut dockerbuild]# docker push zlobniyshurik/netology-devops:dz5.3
 The push refers to repository [docker.io/zlobniyshurik/netology-devops]
 38ad375b00f0: Pushed 
@@ -185,7 +185,7 @@ dz5.3: digest: sha256:b5de5a736c5ad81c71d78492811debf4842abdcf9d14dce7a2356faaa5
 **Шина данных на базе Apache Kafka**  
 
 *Честно говоря, я слабо себе представляю - что это за штука и с чем её едят, но, суммируя доступные мне данные...*  
-Скорее всего, если речь идёт о распределённой, горизонтально масштабируемой системе (как она зявлена), то докер подойдёт.
+Скорее всего, если речь действительно идёт о распределённой, горизонтально масштабируемой системе (как она заявлена), то докер должен подойти.
 
 **Elasticsearch кластер для реализации логирования продуктивного веб-приложения - три ноды elasticsearch, два logstash и две ноды kibana**  
 
