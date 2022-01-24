@@ -34,6 +34,116 @@ Hey, Netology
 ```
 *Опубликуйте созданный форк в своем репозитории и предоставьте ответ в виде ссылки на https://hub.docker.com/username_repo.*
 
+----
+
+**создайте свой репозиторий на https://hub.docker.com**
+
+Готово!  
+![Мой репозиторий на hub.docker.com](https://hub.docker.com/r/zlobniyshurik/netology-devops)
+
+----
+
+**выберете любой образ, который содержит веб-сервер Nginx**
+
+Возьмём **nginx:1.20.2-alpine** - стабильная ветка, маленький образ и жёстко заданная версия ПО.
+
+----
+
+**создайте свой fork образа**  
+**реализуйте функциональность: запуск веб-сервера в фоне с индекс-страницей**  
+
+1. Создаём каталог ***My_WWW_Dir*** для статического содержимого нашего сайта
+```bash
+mkdir My_WWW_Dir
+```
+
+2. Создаём в каталоге ***My_WWW_Dir*** файл **index.html** со следующим содержимым:  
+```html
+<html>
+<head>
+Hey, Netology
+</head>
+<body>
+<h1>I'm DevOps Engineer!</h1>
+</body>
+</html>
+```
+*Не забываем поправить апостроф, а то ерунда вместо него получается...*
+
+3. Создаём **Dockerfile** с начинкой:
+```docker
+FROM nginx:1.20.2-alpine
+
+COPY My_WWW_Dir /usr/share/nginx/html
+
+EXPOSE 80
+```
+
+4. Создаём наш докер-образ, обозвав его **first_try**  
+*Получается как-то так:*  
+```bash
+[root@juggernaut dockerbuild]# docker build . -t first_try
+Sending build context to Docker daemon  3.584kB
+Step 1/3 : FROM nginx:1.20.2-alpine
+ ---> 373f8d4d4c60
+Step 2/3 : COPY My_WWW_Dir /usr/share/nginx/html
+ ---> 5fba032053e2
+Step 3/3 : EXPOSE 80
+ ---> Running in 7cd7792a3a47
+Removing intermediate container 7cd7792a3a47
+ ---> 68bf79d31ced
+Successfully built 68bf79d31ced
+Successfully tagged first_try:latest
+[root@juggernaut dockerbuild]#
+```
+
+5. Запускаем наш контейнер под более удобоваримым именем **my_nginx** и прокидываем порт с докерного 80 на хостовый 8080
+```bash
+[root@juggernaut dockerbuild]# docker run --name my_nginx -d -p 8080:80 first_try
+f539d28fe5a3a219a825ac3a6b9873970a3f2e3cf8132db4ead2c13796e58293
+[root@juggernaut dockerbuild]#
+```
+
+6. И видим в браузере результат
+
+![Результат](/block2/5.3/pic/dz5_3_1.png)
+
+7. Логинимся в докер
+```bash
+[root@juggernaut dockerbuild]# docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: zlobniyshurik
+Password: 
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+[root@juggernaut dockerbuild]#
+```
+
+8. Цепляем тэг на наш свежесозданный локальный контейнер по шаблону типа **\<hub-user\>\/\<repo-name\>\[:\<tag\>\]**
+```bash
+[root@juggernaut dockerbuild]# docker tag first_try:latest zlobniyshurik/netology-devops:dz5.3
+```
+
+9. Отправляем готовый образ на hub.docker.com
+```bash
+[root@juggernaut dockerbuild]# docker push zlobniyshurik/netology-devops:dz5.3
+The push refers to repository [docker.io/zlobniyshurik/netology-devops]
+38ad375b00f0: Pushed 
+6f44c5b5d074: Mounted from library/nginx 
+002fcf848e67: Mounted from library/nginx 
+e419fa208fe1: Mounted from library/nginx 
+112ee9c2903a: Mounted from library/nginx 
+68e5252d0d33: Mounted from library/nginx 
+1a058d5342cc: Mounted from library/nginx 
+dz5.3: digest: sha256:b5de5a736c5ad81c71d78492811debf4842abdcf9d14dce7a2356faaa59c1a36 size: 1775
+[root@juggernaut dockerbuild]#
+```
+
+10. Мой репозиторий в ![https://hub.docker.com/r/zlobniyshurik/netology-devops](https://hub.docker.com/r/zlobniyshurik/netology-devops)
+
 ## Задача 2
 
 *Посмотрите на сценарий ниже и ответьте на вопрос:
