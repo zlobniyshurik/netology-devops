@@ -216,6 +216,69 @@ dz5.3: digest: sha256:b5de5a736c5ad81c71d78492811debf4842abdcf9d14dce7a2356faaa5
 - *Добавьте еще один файл в папку ```/data``` на хостовой машине;*
 - *Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера.*
 
+----
+
+**Запустите первый контейнер из образа ***centos*** c любым тэгом в фоновом режиме, подключив папку ```/data``` из текущей рабочей директории на хостовой машине в ```/data``` контейнера**
+
+Запускаем в первом окошке терминала centos-контейнер **интерактивно** (в фоновом он запускается и тут же завершается, ибо выполнять нечего):
+```
+[shurik@juggernaut dockertest]$ docker run -ti -v /home/shurik/dockertest/data:/data centos:8.4.2105
+Unable to find image 'centos:8.4.2105' locally
+8.4.2105: Pulling from library/centos
+a1d0c7532777: Pull complete 
+Digest: sha256:a27fd8080b517143cbbbab9dfb7c8571c40d67d534bbdee55bd6c473f432b177
+Status: Downloaded newer image for centos:8.4.2105
+[root@97b6303a123a /]#
+```
+
+----
+
+**Запустите второй контейнер из образа ***debian*** в фоновом режиме, подключив папку ```/data``` из текущей рабочей директории на хостовой машине в ```/data``` контейнера**
+
+Запускаем во втором окошке терминала debian-контейнер **интерактивно** (в фоновом он запускается и тут же завершается, ибо выполнять нечего):
+```
+[shurik@juggernaut dockertest]$ docker run -ti -v /home/shurik/dockertest/data:/data debian:11.2
+Unable to find image 'debian:11.2' locally
+11.2: Pulling from library/debian
+0e29546d541c: Pull complete 
+Digest: sha256:2906804d2a64e8a13a434a1a127fe3f6a28bf7cf3696be4223b06276f32f1f2d
+Status: Downloaded newer image for debian:11.2
+root@840c0b2b2ded:/# 
+```
+
+----
+
+**Подключитесь к первому контейнеру с помощью ```docker exec``` и создайте текстовый файл любого содержания в ```/data```**
+
+Подключаться не будем, благо, у нас интерактивный сеанс, но файл создадим:
+```bash
+touch /data/file_from_centos.txt
+```
+
+----
+
+**Добавьте еще один файл в папку ```/data``` на хостовой машине**
+
+Создаём файл на хостовой машине:
+```bash
+touch /home/shurik/dockertest/data/file_from_host.txt
+```
+
+----
+
+**Подключитесь во второй контейнер и отобразите листинг и содержание файлов в ```/data``` контейнера**
+
+Смотрим каталог ***/data*** в debian-контейнере:
+```
+root@840c0b2b2ded:/# ls -la /data
+total 0
+drwxrwxr-x. 1 1000 1000  76 Jan 25 06:39 .
+drwxr-xr-x. 1 root root 160 Jan 25 06:32 ..
+-rw-r--r--. 1 root root   0 Jan 25 06:34 file_from_centos.txt
+-rw-rw-r--. 1 1000 1000   0 Jan 25 06:39 file_from_host.txt
+root@840c0b2b2ded:/#
+```
+
 ## Задача 4 (*)
 
 *Воспроизвести практическую часть лекции самостоятельно.*
