@@ -285,6 +285,9 @@ root@840c0b2b2ded:/#
 
 *Соберите Docker образ с Ansible, загрузите на Docker Hub и пришлите ссылку вместе с остальными ответами к задачам.*
 
+Сделано!  
+![Мой репозиторий на hub.docker.com](https://hub.docker.com/r/zlobniyshurik/ansible)
+
 
 ---
 
