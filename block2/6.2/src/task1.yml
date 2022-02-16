@@ -1,5 +1,5 @@
 #На основе рекомендаций от фирменного Postgres
-version: '6.2'
+version: "3.8"
 
 services:
 
