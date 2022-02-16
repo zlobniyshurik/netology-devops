@@ -1,4 +1,5 @@
 #На основе рекомендаций от фирменного Postgres
+#Юзер Postgres`а: postgres
 version: "3.8"
 
 services:
