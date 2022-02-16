@@ -1,0 +1,23 @@
+#На основе рекомендаций от фирменного Postgres
+version: '6.2'
+
+services:
+
+  db:
+    image: postgres:14-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+      - backup-volume:/var/tmp
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db-volume:
+  backup-volume:
