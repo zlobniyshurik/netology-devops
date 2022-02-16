@@ -12,6 +12,60 @@
 
 *Приведите получившуюся команду или docker-compose манифест.*
 
+**docker-compose манифест**:  
+*(там ещё и **adminer**, ну да лишним не будет)*  
+```yaml
+#На основе рекомендаций от фирменного Postgres
+#Юзер Postgres`а: postgres
+version: "3.8"
+
+services:
+
+  db:
+    image: postgres:12-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+      - backup-volume:/var/tmp
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db-volume:
+  backup-volume:
+```
+
+Запускаем это чудо через 
+```bash
+docker-compose up
+```
+
+Залезаем в контейнер с PostgreSQL и запускаем **psql**
+```bash
+docker exec -it <container ID> sh
+su - postgres
+psql
+```
+
+Видим что-то в этом роде:
+```
+[shurik@juggernaut src]$ docker exec -it 73c526715be3 sh
+/ # su - postgres
+73c526715be3:~$ psql
+psql (12.10)
+Type "help" for help.
+
+postgres=# 
+```
+
 ## Задача 2
 
 *В БД из задачи 1:* 
