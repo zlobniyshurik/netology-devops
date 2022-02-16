@@ -11,6 +11,8 @@ services:
     volumes:
       - db-volume:/var/lib/postgresql/data
       - backup-volume:/var/tmp
+    ports:
+      - 5432:5432
 
   adminer:
     image: adminer
