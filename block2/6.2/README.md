@@ -346,13 +346,174 @@ test_db=#
 
 *Создайте бэкап БД test_db и поместите его в volume, предназначенный для бэкапов (см. Задачу 1).*
 
+Бэкапим БД (правда, только содержимое, без юзеров):  
+```bash
+pg_dump -U postgres -h db -p 5432 --format=custom --clean --create --if-exists -f /var/tmp/test_db.custom test_db
+```
+**-U postgres** - имя пользователя
+
+**-h db** - имя хоста
+
+**-p 5432** - номер порта
+
+**--format=custom** - формат бэкапа (его рекомендуют гуру)
+
+**--clean** - предварительная зачистка восстанавливаемых объектов (вдруг в них что-то уже есть)
+
+**--if-exists** - блокируем ругань при попытках зачистки несуществующих объектов
+
+**-f /var/tmp/test_db.custom** - имя файла с бэкапом
+
+**test_db** - имя забэкапливаемой базы
+
+----
+
 *Остановите контейнер с PostgreSQL (но не удаляйте volumes).*
+
+ Убиваем контейнер с **PostgreSQL**.  
+ **Adminer** можно было бы и не убивать, но свидетелей не оставляют.
+
+```bash
+[shurik@juggernaut src]$ docker ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS       PORTS                                       NAMES
+162b7e0490d6   adminer                  "entrypoint.sh docke…"   19 hours ago   Up 2 hours   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   src_adminer_1
+73c526715be3   postgres:12-alpine3.15   "docker-entrypoint.s…"   19 hours ago   Up 2 hours   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   src_db_1
+[shurik@juggernaut src]$ docker stop 73c526715be3
+73c526715be3
+[shurik@juggernaut src]$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS       PORTS                                       NAMES
+162b7e0490d6   adminer   "entrypoint.sh docke…"   19 hours ago   Up 2 hours   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   src_adminer_1
+[shurik@juggernaut src]$ docker stop 162b7e0490d6
+162b7e0490d6
+[shurik@juggernaut src]$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+[shurik@juggernaut src]$ docker rm 162b7e0490d6
+162b7e0490d6
+[shurik@juggernaut src]$ docker rm 73c526715be3
+73c526715be3
+```
+Том с данными DB таки надо грохнуть.
+```bash
+[shurik@juggernaut src]$ docker volume ls
+DRIVER    VOLUME NAME
+local     src_backup-volume
+local     src_db-volume
+[shurik@juggernaut src]$ docker volume rm src_db-volume
+src_db-volume
+[shurik@juggernaut src]$ docker volume ls
+DRIVER    VOLUME NAME
+local     src_backup-volume
+[shurik@juggernaut src]$
+```
+
+----
 
 *Поднимите новый пустой контейнер с PostgreSQL.*
 
-*Восстановите БД test_db в новом контейнере.*
+Перезапускаем контейнер с **PostgreSQL** через:  
+```bash
+docker-compose up
+```
 
-*Приведите список операций, который вы применяли для бэкапа данных и восстановления.* 
+Заходим в контейнер:  
+```bash
+[shurik@juggernaut src]$ docker ps
+CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+56caef5ecb15   adminer                  "entrypoint.sh docke…"   2 minutes ago   Up 2 minutes   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   src_adminer_1
+129ff2b5a1c3   postgres:12-alpine3.15   "docker-entrypoint.s…"   2 minutes ago   Up 2 minutes   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   src_db_1
+[shurik@juggernaut src]$ docker exec -it 129ff2b5a1c3 sh
+/ # su - postgres
+129ff2b5a1c3:~$
+```
+
+----
+
+*Восстановите БД test_db в новом контейнере.*  
+*Приведите список операций, который вы применяли для бэкапа данных и восстановления.*  
+
+* Заходим в **psql**,
+* проверяем что лишних баз нет,
+* пересоздаём пользователей аналогично Задаче 2
+* выходим из **psql**
+```bash
+129ff2b5a1c3:~$ psql
+psql (12.10)
+Type "help" for help.
+
+postgres=# \l
+                                 List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges   
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+postgres=# CREATE USER test_admin_user WITH PASSWORD 'admin_pass';
+CREATE ROLE
+postgres=# CREATE USER test_simple_user WITH PASSWORD 'simple_pass';
+CREATE ROLE
+postgres=#\q
+129ff2b5a1c3:~$
+```
+
+* Генерим скрипт восстановления через **pg_restore**
+```bash
+pg_restore --create --file=/var/tmp/pg_script /var/tmp/test_db.custom
+```
+
+* Скармливаем его в **psql**
+```bash
+psql -f /var/tmp/restore_script
+```
+
+* Заходим в **psql** и наслаждаемся видом восстановленной базы
+```sql
+129ff2b5a1c3:~$ psql
+psql (12.10)
+Type "help" for help.
+
+postgres=# \l
+                                    List of databases
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |      Access privileges       
+-----------+----------+----------+------------+------------+------------------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres                 +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres                 +
+           |          |          |            |            | postgres=CTc/postgres
+ test_db   | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =Tc/postgres                +
+           |          |          |            |            | postgres=CTc/postgres       +
+           |          |          |            |            | test_admin_user=CTc/postgres
+(4 rows)
+
+postgres=# 
+postgres=# \c test_db
+You are now connected to database "test_db" as user "postgres".
+test_db=# SELECT * FROM clients;
+ id |       фамилия        | страна_проживания | заказ 
+----+----------------------+-------------------+-------
+  4 | Ронни Джеймс Дио     | Russia            |      
+  5 | Ritchie Blackmore    | Russia            |      
+  1 | Иванов Иван Иванович | USA               |     3
+  2 | Петров Петр Петрович | Canada            |     4
+  3 | Иоганн Себастьян Бах | Japan             |     5
+(5 rows)
+
+test_db=# SELECT * FROM orders;
+ id | наименование | цена 
+----+--------------+------
+  1 | Шоколад      |   10
+  2 | Принтер      | 3000
+  3 | Книга        |  500
+  4 | Монитор      | 7000
+  5 | Гитара       | 4000
+(5 rows)
+
+test_db=#
+```
 
 ---
 
