@@ -283,8 +283,32 @@ test_db=#
 |Иоганн Себастьян Бах| Гитара |
 
 *Приведите SQL-запросы для выполнения данных операций.*
+Примерно так:  
+```sql
+postgres=# \c test_db
+You are now connected to database "test_db" as user "postgres".
+test_db=# UPDATE clients SET заказ=3 WHERE id=1;
+UPDATE 1
+test_db=# UPDATE clients SET заказ=4 WHERE id=2;
+UPDATE 1
+test_db=# UPDATE clients SET заказ=5 WHERE id=3;
+UPDATE 1
+test_db=# 
+```
 
 *Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.*
+Сделано:
+```sql
+test_db=# SELECT * FROM clients WHERE заказ IS NOT NULL;
+ id |       фамилия        | страна_проживания | заказ 
+----+----------------------+-------------------+-------
+  1 | Иванов Иван Иванович | USA               |     3
+  2 | Петров Петр Петрович | Canada            |     4
+  3 | Иоганн Себастьян Бах | Japan             |     5
+(3 rows)
+
+test_db=#
+```
  
 *Подсказк - используйте директиву `UPDATE`.*
 
