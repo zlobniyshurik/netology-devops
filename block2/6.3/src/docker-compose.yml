@@ -1,0 +1,25 @@
+#На основе рекомендаций от фирменного MySQL
+#Юзер Postgres`а: postgres
+version: "3.8"
+
+services:
+
+  db:
+    image: mysql:8-oracle
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mypassword
+    volumes:
+      - db-volume:/var/lib/mysql
+
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db-volume:
