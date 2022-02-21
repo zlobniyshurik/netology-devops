@@ -253,11 +253,94 @@ mysql> SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE user='test';
 *Установите профилирование `SET profiling = 1`.
 Изучите вывод профилирования команд `SHOW PROFILES;`.*
 
-*Исследуйте, какой `engine` используется в таблице БД `test_db` и **приведите в ответе**.*
+Включаем профилирование:
+```sql
+mysql> SET profiling=1;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+```
+
+```SHOW PROFILES;``` ничего интересного не выдаёт, ибо включать надо было сильно раньше(?)  
+Ок, вводим несколько SELECT`ов из более ранних задач.
+```sql
+mysql> SHOW PROFILES;
++----------+------------+--------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                              |
++----------+------------+--------------------------------------------------------------------+
+|        1 | 0.00025550 | SELECT * FROM orders                                               |
+|        2 | 0.00049050 | SELECT DATABASE()                                                  |
+|        3 | 0.00388000 | show databases                                                     |
+|        4 | 0.00335100 | show tables                                                        |
+|        5 | 0.00072525 | SELECT * FROM orders                                               |
+|        6 | 0.00227575 | SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE user='test' |
+|        7 | 0.00136625 | SELECT COUNT(*) FROM orders                                        |
++----------+------------+--------------------------------------------------------------------+
+7 rows in set, 1 warning (0.00 sec)
+```
+----
+*Исследуйте, какой `engine` используется в таблице БД `testdb` и **приведите в ответе**.*
+```sql
+mysql> SELECT ENGINE, TABLE_NAME FROM information_schema.tables WHERE TABLE_NAME='orders';
++--------+------------+
+| ENGINE | TABLE_NAME |
++--------+------------+
+| InnoDB | orders     |
++--------+------------+
+1 row in set (0.00 sec)
+
+```
 
 *Измените `engine` и **приведите время выполнения и запрос на изменения из профайлера в ответе**:*
 - *на `MyISAM`*
+```sql
+mysql> ALTER TABLE orders ENGINE=MyISAM;
+Query OK, 5 rows affected (1.50 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SHOW PROFILES;
++----------+------------+------------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                              |
++----------+------------+------------------------------------------------------------------------------------+
+|        1 | 0.00025550 | SELECT * FROM orders                                                               |
+|        2 | 0.00049050 | SELECT DATABASE()                                                                  |
+|        3 | 0.00388000 | show databases                                                                     |
+|        4 | 0.00335100 | show tables                                                                        |
+|        5 | 0.00072525 | SELECT * FROM orders                                                               |
+|        6 | 0.00227575 | SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE user='test'                 |
+|        7 | 0.00136625 | SELECT COUNT(*) FROM orders                                                        |
+|        8 | 0.00222650 | show databases                                                                     |
+|        9 | 0.00027550 | SELECT ENGINE, TABLE FROM information_schema.tables                                |
+|       10 | 0.01225325 | SELECT ENGINE, TABLE_NAME FROM information_schema.tables                           |
+|       11 | 0.00259125 | SELECT ENGINE, TABLE_NAME FROM information_schema.tables WHERE TABLE_NAME='orders' |
+|       12 | 1.49810250 | ALTER TABLE orders ENGINE=MyISAM                                                   |
++----------+------------+------------------------------------------------------------------------------------+
+12 rows in set, 1 warning (0.00 sec)
+```
 - *на `InnoDB`*
+```sql
+mysql> ALTER TABLE orders ENGINE=InnoDB;
+Query OK, 5 rows affected (1.36 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SHOW PROFILES;
++----------+------------+------------------------------------------------------------------------------------+
+| Query_ID | Duration   | Query                                                                              |
++----------+------------+------------------------------------------------------------------------------------+
+|        1 | 0.00025550 | SELECT * FROM orders                                                               |
+|        2 | 0.00049050 | SELECT DATABASE()                                                                  |
+|        3 | 0.00388000 | show databases                                                                     |
+|        4 | 0.00335100 | show tables                                                                        |
+|        5 | 0.00072525 | SELECT * FROM orders                                                               |
+|        6 | 0.00227575 | SELECT * FROM INFORMATION_SCHEMA.USER_ATTRIBUTES WHERE user='test'                 |
+|        7 | 0.00136625 | SELECT COUNT(*) FROM orders                                                        |
+|        8 | 0.00222650 | show databases                                                                     |
+|        9 | 0.00027550 | SELECT ENGINE, TABLE FROM information_schema.tables                                |
+|       10 | 0.01225325 | SELECT ENGINE, TABLE_NAME FROM information_schema.tables                           |
+|       11 | 0.00259125 | SELECT ENGINE, TABLE_NAME FROM information_schema.tables WHERE TABLE_NAME='orders' |
+|       12 | 1.49810250 | ALTER TABLE orders ENGINE=MyISAM                                                   |
+|       13 | 1.36304300 | ALTER TABLE orders ENGINE=InnoDB                                                   |
++----------+------------+------------------------------------------------------------------------------------+
+13 rows in set, 1 warning (0.00 sec)
+```
 
 ## Задача 4 
 
