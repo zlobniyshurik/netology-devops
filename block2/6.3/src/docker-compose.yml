@@ -1,5 +1,7 @@
 #На основе рекомендаций от фирменного MySQL
-#Юзер Postgres`а: postgres
+#Юзер MySQL`я: root
+#в базу заходим через:
+#mysql -h db -u root -p
 version: "3.8"
 
 services:
