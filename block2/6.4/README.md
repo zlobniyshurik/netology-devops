@@ -4,16 +4,66 @@
 
 *Используя docker поднимите инстанс PostgreSQL (версию 13). Данные БД сохраните в volume.*
 
-*Подключитесь к БД PostgreSQL используя `psql`.*
+**docker-compose.yml**:
+```yml
+#На основе рекомендаций от фирменного Postgres
+#Юзер Postgres`а: postgres
+version: "3.8"
 
+services:
+
+  db:
+    image: postgres:13.6-alpine3.15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  db-volume:
+```
+Запускаемся через ```docker-compose up``` и заходим в контейнер с **PostgreSQL**:
+```
+[shurik@juggernaut src]$ docker ps
+CONTAINER ID   IMAGE                      COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+dec4ef9c6d8e   adminer                    "entrypoint.sh docke…"   26 seconds ago   Up 18 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   src_adminer_1
+bf35fb0a19a0   postgres:13.6-alpine3.15   "docker-entrypoint.s…"   26 seconds ago   Up 19 seconds   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   src_db_1
+[shurik@juggernaut src]$ docker exec -it bf35fb0a19a0 bash
+bash-5.1#
+```
+----
+*Подключитесь к БД PostgreSQL используя `psql`.*
+```
+bash-5.1# su - postgres
+bf35fb0a19a0:~$ psql
+psql (13.6)
+Type "help" for help.
+
+postgres=# 
+```
+----
 *Воспользуйтесь командой `\?` для вывода подсказки по имеющимся в `psql` управляющим командам.*
 
 ***Найдите и приведите** управляющие команды для:*
-- *вывода списка БД*
-- *подключения к БД*
-- *вывода списка таблиц*
-- *вывода описания содержимого таблиц*
-- *выхода из psql*
+- *вывода списка БД*  
+```\l```
+- *подключения к БД*  
+```\c <имя_базы>```
+- *вывода списка таблиц*  
+```\dt```
+- *вывода описания содержимого таблиц*  
+```\d <имя_базы>```
+- *выхода из psql*  
+```\q```
 
 ## Задача 2
 
