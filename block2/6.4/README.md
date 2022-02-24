@@ -268,8 +268,22 @@ PARTITION BY RANGE (price);
 ## Задача 4
 
 *Используя утилиту `pg_dump` создайте бекап БД `test_database`.*
+```bash
+pg_dump -f /var/tmp/my_dump.sql -h db -p 5432 -U postgres test_database
+```
 
 *Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?*
+
+Дописал бы к строчке ***title*** признак **UNIQUE**, ну, как-то так:
+```sql
+...
+CREATE TABLE public.orders (
+    id integer,
+    title character varying(80) UNIQUE,
+    price integer
+);
+...
+```
 
 ---
 
