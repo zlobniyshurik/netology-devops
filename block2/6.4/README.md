@@ -189,7 +189,81 @@ test_database=#
 
 *Предложите SQL-транзакцию для проведения данной операции.*
 
+Как-то так:  
+```sql
+START TRANSACTION;
+ALTER TABLE orders RENAME TO orders_old;
+CREATE TABLE orders AS TABLE orders_old WITH NO DATA;
+CREATE TABLE orders_1 () INHERITS (orders);
+CREATE TABLE orders_2 () INHERITS (orders);
+CREATE OR REPLACE FUNCTION orders_insert_trigger()
+RETURNS TRIGGER AS $$
+BEGIN
+  IF (NEW.price <= 499) THEN
+    INSERT INTO orders_2 VALUES (NEW.*);
+  ELSE INSERT INTO orders_1 VALUES (NEW.*);
+  END IF;
+  RETURN NULL;
+END;
+$$
+LANGUAGE plpgsql;
+CREATE TRIGGER insert_orders_trigger
+  BEFORE INSERT ON orders
+  FOR EACH ROW EXECUTE FUNCTION orders_insert_trigger();
+INSERT INTO orders SELECT * FROM orders_old;
+DROP TABLE orders_old;
+COMMIT;
+```
+Интересно, это нормальный вариант или явный оверкилл?
+
+Проверяем результат:
+```sql
+test_database=# SELECT * FROM orders_1;
+ id |       title        | price 
+----+--------------------+-------
+  2 | My little database |   500
+  6 | WAL never lies     |   900
+  8 | Dbiezdmin          |   501
+(3 rows)
+
+test_database=# SELECT * FROM orders_2;
+ id |        title         | price 
+----+----------------------+-------
+  1 | War and peace        |   100
+  3 | Adventure psql time  |   300
+  4 | Server gravity falls |   300
+  5 | Log gossips          |   123
+  7 | Me and my bash-pet   |   499
+(5 rows)
+
+test_database=# SELECT * FROM orders;
+ id |        title         | price 
+----+----------------------+-------
+  2 | My little database   |   500
+  6 | WAL never lies       |   900
+  8 | Dbiezdmin            |   501
+  1 | War and peace        |   100
+  3 | Adventure psql time  |   300
+  4 | Server gravity falls |   300
+  5 | Log gossips          |   123
+  7 | Me and my bash-pet   |   499
+(8 rows)
+
+test_database=#
+```
+----
 *Можно ли было изначально исключить "ручное" разбиение при проектировании таблицы orders?*
+
+Можно. Надо было немного подумать и написать что-то вроде:
+```sql
+CREATE TABLE orders (
+    id integer,
+    title character varying(80),
+    price integer
+)
+PARTITION BY RANGE (price);
+```
+Ну и не забыть создать подтаблицы **orders_1** и **orders_2** с соответствующими диапазонами для ***price***.
 
 ## Задача 4
 
