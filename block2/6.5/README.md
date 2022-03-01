@@ -154,14 +154,155 @@ CONTAINER ID   IMAGE                               COMMAND                  CREA
 | ind-2 | 1 | 2 |
 | ind-3 | 2 | 4 |
 
+**Создаём индексы:**
+```bash
+curl -X PUT http://localhost:9200/ind-1 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0,  "number_of_shards": 1 }}'
+curl -X PUT http://localhost:9200/ind-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 1,  "number_of_shards": 2 }}'
+curl -X PUT http://localhost:9200/ind-3 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 2,  "number_of_shards": 4 }}'
+```
+
+**Получаем в ответ:**
+```json
+{"acknowledged":true,"shards_acknowledged":true,"index":"ind-1"}{"acknowledged":true,"shards_acknowledged":true,"index":"ind-2"}{"acknowledged":true,"shards_acknowledged":true,"index":"ind-3"}
+```
+----
 *Получите список индексов и их статусов, используя API и **приведите в ответе** на задание.*
 
+**Получаем список индексов:**
+```
+[shurik@juggernaut src]$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   ind-1 bCRWnd_gRjm1kyfKC8canw   1   0          0            0       225b           225b
+yellow open   ind-3 myAikqdWQleQMoyk4Y0PjQ   4   2          0            0       900b           900b
+yellow open   ind-2 oIFC80EqQd241irbbqW9Yg   2   1          0            0       450b           450b
+[shurik@juggernaut src]$
+```
+
+**Статус 1го индекса:**
+```
+[shurik@juggernaut src]$ curl -X GET 'http://localhost:9200/_cluster/health/ind-1?pretty'
+{
+  "cluster_name" : "ES_cluster",
+  "status" : "green",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 1,
+  "active_shards" : 1,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 0,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 100.0
+}
+[shurik@juggernaut src]$
+```
+
+**Статус 2го индекса:**
+```
+[shurik@juggernaut src]$ curl -X GET 'http://localhost:9200/_cluster/health/ind-2?pretty'
+{
+  "cluster_name" : "ES_cluster",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 2,
+  "active_shards" : 2,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 2,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 44.44444444444444
+}
+[shurik@juggernaut src]$
+```
+
+**Статус 3го индекса:**
+```
+[shurik@juggernaut src]$ curl -X GET 'http://localhost:9200/_cluster/health/ind-3?pretty'
+{
+  "cluster_name" : "ES_cluster",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 4,
+  "active_shards" : 4,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 8,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 44.44444444444444
+}
+[shurik@juggernaut src]$
+```
+----
 *Получите состояние кластера `elasticsearch`, используя API.*
 
+**Статус кластера:**
+```
+[shurik@juggernaut src]$ curl -X GET 'http://localhost:9200/_cluster/health/?pretty=true'
+{
+  "cluster_name" : "ES_cluster",
+  "status" : "yellow",
+  "timed_out" : false,
+  "number_of_nodes" : 1,
+  "number_of_data_nodes" : 1,
+  "active_primary_shards" : 8,
+  "active_shards" : 8,
+  "relocating_shards" : 0,
+  "initializing_shards" : 0,
+  "unassigned_shards" : 10,
+  "delayed_unassigned_shards" : 0,
+  "number_of_pending_tasks" : 0,
+  "number_of_in_flight_fetch" : 0,
+  "task_max_waiting_in_queue_millis" : 0,
+  "active_shards_percent_as_number" : 44.44444444444444
+}
+[shurik@juggernaut src]$
+```
+----
 *Как вы думаете, почему часть индексов и кластер находится в состоянии yellow?*
 
+**Нода в кластере одна, а количество реплик у части шардов больше нуля и раскидывать их некуда - мало нод.**
+
+----
 *Удалите все индексы.*
 
+**Удаляем:**
+```bash
+[shurik@juggernaut MyEScfg]$ curl -X DELETE 'http://localhost:9200/ind-1?pretty'
+{
+  "acknowledged" : true
+}
+[shurik@juggernaut MyEScfg]$ curl -X DELETE 'http://localhost:9200/ind-2?pretty'
+{
+  "acknowledged" : true
+}
+[shurik@juggernaut MyEScfg]$ curl -X DELETE 'http://localhost:9200/ind-3?pretty'
+{
+  "acknowledged" : true
+}
+[shurik@juggernaut MyEScfg]$
+```
+
+**Перепроверяем состояние кластера:**
+```bash
+[shurik@juggernaut MyEScfg]$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index uuid pri rep docs.count docs.deleted store.size pri.store.size
+[shurik@juggernaut MyEScfg]$
+```
+----
 **Важно**
 
 *При проектировании кластера elasticsearch нужно корректно рассчитывать количество реплик и шард,
