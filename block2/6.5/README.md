@@ -12,7 +12,7 @@
 
 - *составьте Dockerfile-манифест для elasticsearch*  
 
-Примерно так ([Папка с исходниками для сборки](./src)):
+**Примерно так** ([Папка с исходниками для сборки](./src)):
 ```yml
 # С какого линукса дерём основной образ
 FROM centos:7
@@ -59,39 +59,39 @@ ENTRYPOINT ./elasticsearch
 ```
 - *соберите docker-образ и сделайте `push` в ваш docker.io репозиторий*  
 
-Собираем:
+**Собираем:**
 ```bash
 docker build . -t centos7-elasticsearch8_0_0
 ```
-Логинимся:
+**Логинимся:**
 ```bash
 docker login
 ```
-Навешиваем тэг для репы в докерхабе:
+**Навешиваем тэг для репы в докерхабе:**
 ```bash
 docker tag centos7-elasticsearch8_0_0:latest zlobniyshurik/netology-devops:dz6.5
 ```
-Заливаем на докерхаб:
+**Заливаем на докерхаб:**
 ```bash
 docker push zlobniyshurik/netology-devops:dz6.5
 ```
 - *запустите контейнер из получившегося образа и выполните запрос пути `/` c хост-машины*  
 
-Создаём том для данных и логов (они должны пережить выключение/рестарт контейнера):
+**Создаём том для данных и логов** (они должны пережить выключение/рестарт контейнера):
 ```bash
 docker volume create es_volume
 ```
-Запускаем:
+**Запускаем:**
 ```bash
 docker run -d --mount source=es_volume,target=/opt/ext_volume --ulimit nofile=65535 -p=9200:9200 -p=9300:9300 centos7-elasticsearch8_0_0
 ```
-Видим что-то такое:
+**Видим что-то вроде...**
 ```
 [shurik@juggernaut MyEScfg]$ docker ps --all
 CONTAINER ID   IMAGE                               COMMAND                  CREATED          STATUS          PORTS                                                                                  NAMES
 68cdb7196a2c   centos7-elasticsearch8_0_0:latest   "/bin/sh -c ./elasti…"   39 minutes ago   Up 39 minutes   0.0.0.0:9200->9200/tcp, :::9200->9200/tcp, 0.0.0.0:9300->9300/tcp, :::9300->9300/tcp   brave_lederberg
 ```
-Проверяем ответ:
+**Проверяем ответ:**
 ```bash
 [shurik@juggernaut MyEScfg]$ curl -X GET http://localhost:9200
 {
@@ -117,16 +117,17 @@ CONTAINER ID   IMAGE                               COMMAND                  CREA
 *Требования к `elasticsearch.yml`:*
 - *данные `path` должны сохраняться в `/var/lib`*  
 
-Нет уж, нет уж, левый софт, да ещё и не через **dnf/yum/rpm** ставленный, лучше в **/opt** закину, там же и внешний том примонтирую. Если что, и вычищать проще.
+**Нет уж, нет уж, левый софт, да ещё и не через ```dnf/yum/rpm``` ставленный, я лучше в ```/opt``` закину, там же и внешний том примонтирую.  
+...Если что, и вычищать проще.**
 
 - *имя ноды должно быть `netology_test`*
 
 *В ответе приведите:*
 - *текст Dockerfile манифеста*
 - *ссылку на образ в репозитории dockerhub*
-- *ответ `elasticsearch` на запрос пути `/` в json виде*
 
-[Мой репозиторий](https://hub.docker.com/r/zlobniyshurik/netology-devops) на Докерхабе:
+**[Мой репозиторий](https://hub.docker.com/r/zlobniyshurik/netology-devops) на Докерхабе**
+- *ответ `elasticsearch` на запрос пути `/` в json виде*
 
 
 *Подсказки:*
