@@ -2,7 +2,7 @@
 FROM centos:7
 
 # создаём группу/юзера elasticsearch:elasticsearch,
-# Устанавливаем wget и java-11
+# Устанавливаем wget
 # Создаём папки в /opt/ext_volume для подключаемого тома (там будут данные и логи)
 # Устанавливаем Elasticsearch в /opt,
 # Задаём владельца elasticsearch:elasticsearch для подпапок в /opt
