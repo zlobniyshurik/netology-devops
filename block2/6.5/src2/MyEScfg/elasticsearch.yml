@@ -85,6 +85,6 @@ cluster.initial_master_nodes: "netology_test"
 #
 # Allow wildcard deletion of indices:
 #
-#action.destructive_requires_name: false
+action.destructive_requires_name: false
 xpack.security.enabled: false
 ingest.geoip.downloader.enabled: false
