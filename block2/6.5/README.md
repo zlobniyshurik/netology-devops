@@ -316,24 +316,129 @@ health status index uuid pri rep docs.count docs.deleted store.size pri.store.si
 
 *Создайте директорию `{путь до корневой директории с elasticsearch в образе}/snapshots`.*
 
+**Пересобрал образ с учётом создания каталога */opt/ext_volume/snapshots* под снапшоты,  
+прописывания этого каталога в конфиг-файле для Elasticsearch`а и  
+с отключенным GeoIP (он нам не нужен, а с бэкапами работать мешает)**  
+[Папка с модифицированными исходниками для сборки](./src2)  
+
+----
+
 *Используя API [зарегистрируйте](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-register-repository.html#snapshots-register-repository) 
 данную директорию как `snapshot repository` c именем `netology_backup`.*
 
 ***Приведите в ответе** запрос API и результат вызова API для создания репозитория.*
 
+**Регистрируем через API директорию *netology_backup*:**
+```bash
+[shurik@juggernaut src2]$ curl -X POST http://localhost:9200/_snapshot/netology_backup?pretty -H 'Content-Type: application/json' -d'{"type": "fs", "settings": { "location":"/opt/ext_volume/snapshots" }}'
+{
+  "acknowledged" : true
+}
+[shurik@juggernaut src2]$
+```
+
+----
+
 *Создайте индекс `test` с 0 реплик и 1 шардом и **приведите в ответе** список индексов.*
+
+**Создаём индекс ```test```**:
+```bash
+[shurik@juggernaut src2]$ curl -X PUT http://localhost:9200/test -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0, "number_of_shards": 1 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test"}[shurik@juggernaut src2]$
+```
+
+**Смотрим список индексов**:
+```bash
+[shurik@juggernaut src2]$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test  8AUelgbETem8uCUkF5baXA   1   0          0            0       225b           225b
+[shurik@juggernaut src2]$
+```
+
+----
 
 *[Создайте `snapshot`](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-take-snapshot.html) 
 состояния кластера `elasticsearch`.*
 
 ***Приведите в ответе** список файлов в директории со `snapshot`ами.*
 
+**Создаём снапшот**:
+```bash
+[shurik@juggernaut src2]$ curl -X PUT http://localhost:9200/_snapshot/netology_backup/elasticsearch?wait_for_completion=true
+{"snapshot":{"snapshot":"elasticsearch","uuid":"s83fs4KlTnuuQqfjP6e59Q","repository":"netology_backup","version_id":8000099,"version":"8.0.0","indices":["test"],"data_streams":[],"include_global_state":true,"state":"SUCCESS","start_time":"2022-03-02T04:11:05.095Z","start_time_in_millis":1646194265095,"end_time":"2022-03-02T04:11:05.495Z","end_time_in_millis":1646194265495,"duration_in_millis":400,"failures":[],"shards":{"total":1,"failed":0,"successful":1},"feature_states":[]}}[shurik@juggernaut src2]$ 
+```
+
+**Смотрим список файлов в папке со снапшотами**:
+```bash
+[elasticsearch@edf63300fedb bin]$ ls -la /opt/ext_volume/snapshots/
+total 36
+drwxr-xr-x. 1 elasticsearch elasticsearch   176 Mar  2 04:11 .
+drwxr-xr-x. 1 elasticsearch elasticsearch    34 Mar  2 03:56 ..
+-rw-r--r--. 1 elasticsearch elasticsearch   589 Mar  2 04:11 index-0
+-rw-r--r--. 1 elasticsearch elasticsearch     8 Mar  2 04:11 index.latest
+drwxr-xr-x. 1 elasticsearch elasticsearch    44 Mar  2 04:11 indices
+-rw-r--r--. 1 elasticsearch elasticsearch 17135 Mar  2 04:11 meta-s83fs4KlTnuuQqfjP6e59Q.dat
+-rw-r--r--. 1 elasticsearch elasticsearch   308 Mar  2 04:11 snap-s83fs4KlTnuuQqfjP6e59Q.dat
+[elasticsearch@edf63300fedb bin]$
+```
+
+----
+
 *Удалите индекс `test` и создайте индекс `test-2`. **Приведите в ответе** список индексов.*
+
+**Удаляем индекс ```test```**:
+```bash
+[shurik@juggernaut src2]$ curl -X DELETE 'http://localhost:9200/test?pretty'
+{
+  "acknowledged" : true
+}
+[shurik@juggernaut src2]$
+```
+
+**Создаём индекс ```test-2```**:
+```bash
+[shurik@juggernaut src2]$ curl -X PUT http://localhost:9200/test-2 -H 'Content-Type: application/json' -d'{ "settings": { "number_of_replicas": 0, "number_of_shards": 1 }}'
+{"acknowledged":true,"shards_acknowledged":true,"index":"test-2"}[shurik@juggernaut src2]$
+```
+
+**Смотрим список индексов**:
+```bash
+[shurik@juggernaut src2]$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 oez0F7msTnydqE0UB5uMBw   1   0          0            0       225b           225b
+[shurik@juggernaut src2]$
+```
+
+----
 
 *[Восстановите](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshots-restore-snapshot.html) состояние
 кластера `elasticsearch` из `snapshot`, созданного ранее. *
 
 ***Приведите в ответе** запрос к API восстановления и итоговый список индексов.*
+
+**Восстанавливаем индексы из снапшота**:  
+***(на этом месте пришлось в `elasticsearch.yml` ещё и строчку `action.destructive_requires_name: false` добавлять)***
+```bash
+[shurik@juggernaut src2]$ curl -X POST 'http://localhost:9200/.*/_close?pretty'
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : false,
+  "indices" : { }
+}
+[shurik@juggernaut src2]$ curl -X POST 'http://localhost:9200/_snapshot/netology_backup/elasticsearch/_restore?wait_for_completion=true'
+{"snapshot":{"snapshot":"elasticsearch","indices":["test"],"shards":{"total":1,"failed":0,"successful":1}}}[shurik@juggernaut src2]$
+```
+
+**Любуемся на список индексов**:
+```bash
+[shurik@juggernaut src2]$ curl -X GET 'http://localhost:9200/_cat/indices?v'
+health status index  uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   test-2 oez0F7msTnydqE0UB5uMBw   1   0          0            0       247b           247b
+green  open   test   x77pFGEBQr6JLdh4Nu01YQ   1   0          0            0       225b           225b
+[shurik@juggernaut src2]$
+```
+
+----
 
 *Подсказки:*
 - *возможно вам понадобится доработать `elasticsearch.yml` в части директивы `path.repo` и перезапустить `elasticsearch`*
