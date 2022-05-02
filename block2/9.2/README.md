@@ -108,8 +108,28 @@ while (index < 10):
    4. *classifier: distrib*
    5. *type: tar.gz*
 2. *В него же загружаем такой же артефакт, но с version: 8_102*
-3. *Проверяем, что все файлы загрузились успешно*
-4. *В ответе присылаем файл `maven-metadata.xml` для этого артефекта*
+3. *Проверяем, что все файлы загрузились успешно*  
+**Похоже, сработало:**  
+![Загруженные файлы](./pic/dz9_2_2_1.png)
+4. *В ответе присылаем файл `maven-metadata.xml` для этого артефекта*  
+**Результат** ***(он же в виде [файла](./nexus/maven-metadata.xml))*** **:**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>netology</groupId>
+  <artifactId>java</artifactId>
+  <versioning>
+    <latest>8_282</latest>
+    <release>8_282</release>
+    <versions>
+      <version>8_102</version>
+      <version>8_282</version>
+    </versions>
+    <lastUpdated>20220502071733</lastUpdated>
+  </versioning>
+</metadata>
+```
+
 
 ### Знакомство с Maven
 
