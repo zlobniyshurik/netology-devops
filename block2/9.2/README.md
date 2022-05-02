@@ -136,8 +136,22 @@ while (index < 10):
 ### Подготовка к выполнению
 
 1. *Скачиваем дистрибутив с [maven](https://maven.apache.org/download.cgi)*
-2. *Разархивируем, делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)*
-3. *Проверяем `mvn --version`*
+2. *Разархивируем, делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)*  
+**Распаковываем архив с ***Maven*** в папку `/opt/maven` и пользуемся линками:**  
+```bash
+ln -s /opt/maven/bin/mvn /usr/bin/mvn
+chmod ugo+x /usr/bin/mvn
+```
+3. *Проверяем `mvn --version`*  
+**Работает:**  
+```
+[root@juggernaut bin]# mvn --version
+Apache Maven 3.8.5 (3599d3414f046de2324203b78ddcf9b5e4388aa0)
+Maven home: /opt/maven
+Java version: 17.0.2, vendor: Red Hat, Inc., runtime: /usr/lib/jvm/java-17-openjdk-17.0.2.0.8-7.fc36.x86_64
+Default locale: ru_RU, platform encoding: UTF-8
+OS name: "linux", version: "5.17.3-302.fc36.x86_64", arch: "amd64", family: "unix"
+```
 4. *Забираем директорию [mvn](./mvn) с pom*
 
 ### Основная часть
