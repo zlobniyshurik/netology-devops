@@ -51,7 +51,7 @@ INFO: Linux 5.17.3-302.fc36.x86_64 amd64
 ![Более подробная картина](./pic/dz9_2_1_2.png)  
 7. *Исправляем ошибки, которые он выявил(включая warnings)*  
 **Лихорадочно правим код...**  
-***Было:***
+***Было*** *(сбойный скрипт [здесь](./example/fail.py))* ***:***
 ```python
 def increment(index):
     index =+ 1
@@ -68,7 +68,7 @@ while (index < 10):
     print(get_square(index))
 ```
 
-***Стало:***
+***Стало*** *(скорректированный скрипт [здесь](./example/corrected.py))* ***:***
 ```python
 def increment(index):
     result = index + 1
@@ -77,7 +77,6 @@ def get_square(numb):
     return numb*numb
 def print_numb(numb):
     print("Number is {}".format(numb))
-    pass
 
 index = 0
 while (index < 10):
