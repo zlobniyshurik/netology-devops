@@ -158,9 +158,46 @@ OS name: "linux", version: "5.17.3-302.fc36.x86_64", arch: "amd64", family: "uni
 
 1. *Меняем в `pom.xml` блок с зависимостями под наш артефакт из первого пункта задания для Nexus (java с версией 8_282)*
 2. *Запускаем команду `mvn package` в директории с `pom.xml`, ожидаем успешного окончания*
-3. *Проверяем директорию `~/.m2/repository/`, находим наш артефакт*
-4. *В ответе присылаем исправленный файл `pom.xml`*
-
+3. *Проверяем директорию `~/.m2/repository/`, находим наш артефакт*  
+**Кажется, это оно...**  
+```bash
+[shurik@juggernaut 8_282]$ ls -la ~/.m2/repository/netology/java/8_282/
+итого 16
+drwxrwxr-x. 1 shurik shurik 202 мая  2 16:28 .
+drwxrwxr-x. 1 shurik shurik  10 мая  2 16:28 ..
+-rw-rw-r--. 1 shurik shurik   4 мая  2 16:28 java-8_282-distrib.tar.gz
+-rw-rw-r--. 1 shurik shurik  40 мая  2 16:28 java-8_282-distrib.tar.gz.sha1
+-rw-rw-r--. 1 shurik shurik 383 мая  2 16:28 java-8_282.pom.lastUpdated
+-rw-rw-r--. 1 shurik shurik 176 мая  2 16:28 _remote.repositories
+```
+4. *В ответе присылаем исправленный файл `pom.xml`*  
+**Исправленный `pom.xml`:**
+```xml
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+.
+  <groupId>com.netology.app</groupId>
+  <artifactId>simple-app</artifactId>
+  <version>1.0-SNAPSHOT</version>
+   <repositories>
+    <repository>
+      <id>my-repo</id>
+      <name>maven-public</name>
+      <url>http://localhost:8081/repository/maven-public/</url>
+    </repository>
+  </repositories>
+  <dependencies>
+     <dependency>
+      <groupId>netology</groupId>
+      <artifactId>java</artifactId>
+      <version>8_282</version>
+      <classifier>distrib</classifier>
+      <type>tar.gz</type>
+    </dependency>
+  </dependencies>
+</project>
+```
 ---
 
 ### Как оформить ДЗ?
