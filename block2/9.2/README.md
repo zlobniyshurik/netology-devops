@@ -50,8 +50,44 @@ INFO: Linux 5.17.3-302.fc36.x86_64 amd64
 ***Расшифровка отдельных багов***
 ![Более подробная картина](./pic/dz9_2_1_2.png)  
 7. *Исправляем ошибки, которые он выявил(включая warnings)*  
+**Лихорадочно правим код...**  
+***Было:***
+```python
+def increment(index):
+    index =+ 1
+    return index
+def get_square(numb):
+    return numb*numb
+def print_numb(numb):
+    print("Number is {}".format(numb))
+    pass
+
+index = 0
+while (index < 10):
+    index = increment(index)
+    print(get_square(index))
+```
+
+***Стало:***
+```python
+def increment(index):
+    result = index + 1
+    return result
+def get_square(numb):
+    return numb*numb
+def print_numb(numb):
+    print("Number is {}".format(numb))
+    pass
+
+index = 0
+while (index < 10):
+    index = increment(index)
+    print(get_square(index))
+```
 8. *Запускаем анализатор повторно - проверяем, что QG пройдены успешно*  
-9. *Делаем скриншот успешного прохождения анализа, прикладываем к решению ДЗ*
+9. *Делаем скриншот успешного прохождения анализа, прикладываем к решению ДЗ*  
+**Смотри-ка, реально больше не ругается...**  
+![Результат исправленного скрипта](./pic/dz9_2_1_3.png)
 
 ## Знакомство с Nexus
 
