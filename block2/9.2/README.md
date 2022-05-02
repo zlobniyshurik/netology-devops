@@ -18,11 +18,34 @@
 ### Основная часть
 
 1. *Создаём новый проект, название произвольное*
-2. *Скачиваем пакет sonar-scanner, который нам предлагает скачать сам sonarqube*
-3. *Делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)*
-4. *Проверяем `sonar-scanner --version`*
+2. *Скачиваем пакет sonar-scanner, который нам предлагает скачать сам sonarqube*  
+**На самом деле, ссылка от запущенного ***SonarQube*** нерабочая, так что сами качаем архив с фирменного сайта и распаковываем его в `/opt/sonarscanner` на локальной машине**
+3. *Делаем так, чтобы binary был доступен через вызов в shell (или меняем переменную PATH или любой другой удобный вам способ)*  
+**Проще всего сделать через линки:**
+```bash
+ln -s /opt/sonarscanner/bin/sonar-scanner /usr/bin/sonar-scanner
+ln -s /opt/sonarscanner/bin/sonar-scanner-debug /usr/bin/sonar-scanner-debug
+chmod ugo+x /usr/bin/sonar-scanner*
+```
+**А ещё надо прописать права для встроенной Java, иначе не работает:**
+```bash
+chmod 755 /opt/sonarscanner/jre/bin/java
+```
+4. *Проверяем `sonar-scanner --version`*  
+**Получаем это:**
+```
+[root@juggernaut bin]# sonar-scanner --version
+INFO: Scanner configuration file: /opt/sonarscanner/conf/sonar-scanner.properties
+INFO: Project root configuration file: NONE
+INFO: SonarScanner 4.7.0.2747
+INFO: Java 11.0.14.1 Eclipse Adoptium (64-bit)
+INFO: Linux 5.17.3-302.fc36.x86_64 amd64
+```
 5. *Запускаем анализатор против кода из директории [example](./example) с дополнительным ключом `-Dsonar.coverage.exclusions=fail.py`*
-6. *Смотрим результат в интерфейсе*
+6. *Смотрим результат в интерфейсе*  
+**Получаем следующее:**  
+![Общий итог багов](./pic/dz9_2_1_1.png)  
+![Более подробная картина](./pic/dz9_2_1_2.png)
 7. *Исправляем ошибки, которые он выявил(включая warnings)*
 8. *Запускаем анализатор повторно - проверяем, что QG пройдены успешно*
 9. *Делаем скриншот успешного прохождения анализа, прикладываем к решению ДЗ*
