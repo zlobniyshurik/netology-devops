@@ -108,7 +108,7 @@ systemctl status jenkins
 ![Картинка 2.2](./pic/dz9_3_2_2.png)  
 
 **И результат:**  
-[Картинка 2.3](./pic/dz9_3_2_3.png)  
+![Картинка 2.3](./pic/dz9_3_2_3.png)  
 
 ----
 3. *Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`*
