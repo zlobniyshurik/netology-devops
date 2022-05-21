@@ -111,7 +111,29 @@ systemctl status jenkins
 ![Картинка 2.3](./pic/dz9_3_2_3.png)  
 
 ----
-3. *Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`*
+3. *Перенести Declarative Pipeline в репозиторий в файл `Jenkinsfile`*  
+
+**Перенёс в [репозиторий](https://github.com/zlobniyshurik/example-playbook)**  
+
+**Сам текст файла выглядит как-то так:**
+```
+pipeline {
+  agent any
+  stages {
+    stage('Preparation') { 
+        // for display purposes
+        // Get some code from a GitHub repository
+        git 'https://github.com/zlobniyshurik/example-playbook.git'
+    }
+    stage('Build') {
+        sh 'ansible-galaxy install -p "/var/lib/jenkins/workspace/Task2" -r requirements.yml'
+        sh 'ansible-playbook "/var/lib/jenkins/workspace/Task2/site.yml"'
+    }
+  }
+}
+```
+
+----
 4. *Перенастроить Job на использование `Jenkinsfile` из репозитория*
 5. *Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline)*
 6. *Заменить credentialsId на свой собственный*
