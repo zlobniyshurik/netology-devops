@@ -1,0 +1,14 @@
+pipeline {
+  agent any
+  stages {
+    stage('Preparation') { 
+        // for display purposes
+        // Get some code from a GitHub repository
+        git 'https://github.com/zlobniyshurik/example-playbook.git'
+    }
+    stage('Build') {
+        sh 'ansible-galaxy install -p "/var/lib/jenkins/workspace/Task2" -r requirements.yml'
+        sh 'ansible-playbook "/var/lib/jenkins/workspace/Task2/site.yml"'
+    }
+  }
+}
