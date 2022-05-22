@@ -274,7 +274,117 @@ pipeline {
 ```
 
 ----
-4. *Перенастроить Job на использование `Jenkinsfile` из репозитория*
+4. *Перенастроить Job на использование `Jenkinsfile` из репозитория*  
+
+**Копируем job из предыдущего пункта, внеся небольшие изменения**  
+![Картинка 4.1](./pic/dz9_3_4_1.png)
+
+**Правим владельца для '/var/lib/jenkins/caches' на 'jenkins:jenkins'**
+
+**И получаем результат (вывод на консоль):**  
+```
+Started by user Админ Админыч
+Obtained Jenkinsfile from git git@github.com:zlobniyshurik/example-playbook.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Node1 in /var/lib/jenkins/workspace/DeclarativeV2
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential 67e4edd5-44a3-432a-a456-f6a05d7015b1
+Cloning the remote Git repository
+Cloning repository git@github.com:zlobniyshurik/example-playbook.git
+ > git init /var/lib/jenkins/workspace/DeclarativeV2 # timeout=10
+Fetching upstream changes from git@github.com:zlobniyshurik/example-playbook.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.1'
+using GIT_SSH to set credentials zlobniyshurik (ssh key without pass for github.com)
+[INFO] Currently running in a labeled security context
+[INFO] Currently SELinux is 'enforcing' on the host
+ > /usr/bin/chcon --type=ssh_home_t /var/lib/jenkins/workspace/DeclarativeV2@tmp/jenkins-gitclient-ssh5529512003677570044.key
+ > git fetch --tags --force --progress -- git@github.com:zlobniyshurik/example-playbook.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision acf4cfa2c39b16bc96fbdf59f00ff4142eeee247 (refs/remotes/origin/master)
+Commit message: "Меняем Jenkinsfile на свой"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Get code from GitHub)
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+Fetching changes from the remote Git repository
+ > git config remote.origin.url git@github.com:zlobniyshurik/example-playbook.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f acf4cfa2c39b16bc96fbdf59f00ff4142eeee247 # timeout=10
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/DeclarativeV2/.git # timeout=10
+ > git config remote.origin.url git@github.com:zlobniyshurik/example-playbook.git # timeout=10
+Fetching upstream changes from git@github.com:zlobniyshurik/example-playbook.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.1'
+ > git fetch --tags --force --progress -- git@github.com:zlobniyshurik/example-playbook.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision acf4cfa2c39b16bc96fbdf59f00ff4142eeee247 (refs/remotes/origin/master)
+Commit message: "Меняем Jenkinsfile на свой"
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f acf4cfa2c39b16bc96fbdf59f00ff4142eeee247 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b master acf4cfa2c39b16bc96fbdf59f00ff4142eeee247 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run ansible)
+[Pipeline] sh
++ ansible-galaxy install -p /var/lib/jenkins/workspace/DeclarativeV2 -r requirements.yml
+Starting galaxy role install process
+- extracting java to /var/lib/jenkins/workspace/DeclarativeV2/java
+- java (1.0.1) was installed successfully
+[Pipeline] sh
++ ansible-playbook /var/lib/jenkins/workspace/DeclarativeV2/site.yml -i /var/lib/jenkins/workspace/DeclarativeV2/inventory/prod.yml
+
+PLAY [Install Java] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [java : Upload .tar.gz file containing binaries from local storage] *******
+skipping: [localhost]
+
+TASK [java : Upload .tar.gz file conaining binaries from remote storage] *******
+ok: [localhost]
+
+TASK [java : Ensure installation dir exists] ***********************************
+ok: [localhost]
+
+TASK [java : Extract java in the installation directory] ***********************
+skipping: [localhost]
+
+TASK [java : Export environment variables] *************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
+----
 5. *Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline)*
 6. *Заменить credentialsId на свой собственный*
 7. *Проверить работоспособность, исправить ошибки, исправленный Pipeline вложить в репозитрий в файл `ScriptedJenkinsfile`*
