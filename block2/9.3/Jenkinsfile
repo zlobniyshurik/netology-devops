@@ -1,14 +1,17 @@
 pipeline {
-  agent any
-  stages {
-    stage('Preparation') { 
-        // for display purposes
-        // Get some code from a GitHub repository
-        git 'https://github.com/zlobniyshurik/example-playbook.git'
+    agent any
+    stages {
+        stage('Get code from GitHub') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'git@github.com:zlobniyshurik/example-playbook.git'
+            }
+        }
+        stage('Run ansible') {
+            steps {
+                sh 'ansible-galaxy install -p $WORKSPACE -r requirements.yml'
+                sh 'ansible-playbook $WORKSPACE/site.yml -i $WORKSPACE/inventory/prod.yml'
+            }
+        }
     }
-    stage('Build') {
-        sh 'ansible-galaxy install -p "/var/lib/jenkins/workspace/Task2" -r requirements.yml'
-        sh 'ansible-playbook "/var/lib/jenkins/workspace/Task2/site.yml"'
-    }
-  }
 }
