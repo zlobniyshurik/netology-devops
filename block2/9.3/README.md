@@ -279,7 +279,7 @@ pipeline {
 **Копируем job из предыдущего пункта, внеся небольшие изменения**  
 ![Картинка 4.1](./pic/dz9_3_4_1.png)
 
-**Правим владельца для '/var/lib/jenkins/caches' на 'jenkins:jenkins'**
+**Правим владельца для `/var/lib/jenkins/caches` на `jenkins:jenkins`**
 
 **И получаем результат (вывод на консоль):**  
 ```
@@ -386,10 +386,129 @@ Finished: SUCCESS
 
 ----
 5. *Создать Scripted Pipeline, наполнить его скриптом из [pipeline](./pipeline)*
+
+**Делаем всё по образу и подобию 3 подзадачи, только скрипт меняем на [этот](https://github.com/netology-code/mnt-homeworks/blob/master/09-ci-03-jenkins/pipeline/Jenkinsfile)**
+
+----
 6. *Заменить credentialsId на свой собственный*
+
+**Поменял**
+
+----
 7. *Проверить работоспособность, исправить ошибки, исправленный Pipeline вложить в репозитрий в файл `ScriptedJenkinsfile`*
+
+**Исправил скрипт на что-то вроде этого:**  
+```
+node("ansible_docker"){
+    stage("Git checkout"){
+        git credentialsId: '67e4edd5-44a3-432a-a456-f6a05d7015b1', url: 'git@github.com:aragastmatb/example-playbook.git'
+    }
+    stage("Check ssh key"){
+        secret_check=true
+    }
+    stage("Run playbook"){
+        if (secret_check){
+            sh 'ansible-galaxy install -p $WORKSPACE -r requirements.yml'
+            sh 'ansible-playbook $WORKSPACE/site.yml -i $WORKSPACE/inventory/prod.yml'
+        }
+        else{
+            echo 'no more keys'
+        }
+        
+    }
+}
+```
+
+**И оно даже, вроде как, сработало, если верить выводу на консоль:**  
+```
+Started by user Админ Админыч
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Node1 in /var/lib/jenkins/workspace/Scripted
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Git checkout)
+[Pipeline] git
+The recommended git tool is: NONE
+using credential 67e4edd5-44a3-432a-a456-f6a05d7015b1
+Cloning the remote Git repository
+Cloning repository git@github.com:aragastmatb/example-playbook.git
+ > git init /var/lib/jenkins/workspace/Scripted # timeout=10
+Fetching upstream changes from git@github.com:aragastmatb/example-playbook.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.36.1'
+using GIT_SSH to set credentials zlobniyshurik (ssh key without pass for github.com)
+[INFO] Currently running in a labeled security context
+[INFO] Currently SELinux is 'enforcing' on the host
+ > /usr/bin/chcon --type=ssh_home_t /var/lib/jenkins/workspace/Scripted@tmp/jenkins-gitclient-ssh6621480002996650854.key
+ > git fetch --tags --force --progress -- git@github.com:aragastmatb/example-playbook.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision e5660f16a6ad9df2e800723763e1cce459fcdc76 (refs/remotes/origin/master)
+Commit message: "Update Jenkinsfile"
+First time build. Skipping changelog.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Check ssh key)
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run playbook)
+[Pipeline] sh
+ > git config remote.origin.url git@github.com:aragastmatb/example-playbook.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e5660f16a6ad9df2e800723763e1cce459fcdc76 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b master e5660f16a6ad9df2e800723763e1cce459fcdc76 # timeout=10
++ ansible-galaxy install -p /var/lib/jenkins/workspace/Scripted -r requirements.yml
+Starting galaxy role install process
+- extracting java to /var/lib/jenkins/workspace/Scripted/java
+- java (1.0.1) was installed successfully
+[Pipeline] sh
++ ansible-playbook /var/lib/jenkins/workspace/Scripted/site.yml -i /var/lib/jenkins/workspace/Scripted/inventory/prod.yml
+
+PLAY [Install Java] ************************************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [java : Upload .tar.gz file containing binaries from local storage] *******
+skipping: [localhost]
+
+TASK [java : Upload .tar.gz file conaining binaries from remote storage] *******
+ok: [localhost]
+
+TASK [java : Ensure installation dir exists] ***********************************
+ok: [localhost]
+
+TASK [java : Extract java in the installation directory] ***********************
+skipping: [localhost]
+
+TASK [java : Export environment variables] *************************************
+ok: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=4    changed=0    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+
+REST API
+Jenkins 2.348
+```
+
+----
 8. *Отправить ссылку на репозиторий в ответе*
 
+**Ссылка на [репозиторий](https://github.com/zlobniyshurik/example-playbook)**
+
+----
 ## Необязательная часть
 
 1. *Создать скрипт на groovy, который будет собирать все Job, которые завершились хотя бы раз неуспешно. Добавить скрипт в репозиторий с решеним с названием `AllJobFailure.groovy`*
