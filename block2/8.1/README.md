@@ -157,7 +157,7 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 5. *Добавьте факты в `group_vars` каждой из групп хостов так, чтобы для `some_fact` получились следующие значения: для `deb` - 'deb default fact', для `el` - 'el default fact'.*  
 
 **Для `deb` в `group_vars/deb/examp.yml` прописываем в `some_fact` значение `deb default fact`**  
-**Для `el` в `group_vars/el/examp.yml` прописываем в `some_fact` значение `deb default fact`**  
+**Для `el` в `group_vars/el/examp.yml` прописываем в `some_fact` значение `el default fact`**  
 
 ----
 6.  *Повторите запуск playbook на окружении `prod.yml`. Убедитесь, что выдаются корректные значения для всех хостов.*
