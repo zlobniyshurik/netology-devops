@@ -1,7 +1,25 @@
 # Домашнее задание к занятию "08.01 Введение в Ansible"
 
 ## Подготовка к выполнению
-1. *Установите ansible версии 2.10 или выше.*
+
+----
+1. *Установите ansible версии 2.10 или выше.*  
+
+**Уже установлен:**  
+```bash
+[root@juggernaut ~]# ansible --version
+ansible [core 2.12.5]
+  config file = /etc/ansible/ansible.cfg
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3.10/site-packages/ansible
+  ansible collection location = /root/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible
+  python version = 3.10.4 (main, Mar 25 2022, 00:00:00) [GCC 12.0.1 20220308 (Red Hat 12.0.1-0)]
+  jinja version = 3.0.3
+  libyaml = True
+```
+
+----
 2. *Создайте свой собственный публичный репозиторий на github с произвольным именем.*
 3. *Скачайте [playbook](./playbook/) из репозитория с домашним заданием и перенесите его в свой репозиторий.*
 
