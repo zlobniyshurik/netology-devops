@@ -372,6 +372,9 @@ ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    s
 ----
 12. *Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.*
 
+**Готово! Ссылка на [репозиторий](https://github.com/zlobniyshurik/netology-block2-dz81-repo/tree/master/playbook)**
+
+----
 ## Необязательная часть
 
 1. *При помощи `ansible-vault` расшифруйте все зашифрованные файлы с переменными.*
