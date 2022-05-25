@@ -257,7 +257,55 @@ PLAY RECAP *********************************************************************
 centos7                    : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 ubuntu                     : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
 ```
-9. *Посмотрите при помощи `ansible-doc` список плагинов для подключения. Выберите подходящий для работы на `control node`.*
+
+----
+9. *Посмотрите при помощи `ansible-doc` список плагинов для подключения. Выберите подходящий для работы на `control node`.*  
+
+**Как-то так:**  
+```
+[root@juggernaut playbook]# ansible-doc --type=connection -l
+[WARNING]: Collection frr.frr does not support Ansible version 2.12.5
+[WARNING]: Collection ibm.qradar does not support Ansible version 2.12.5
+[WARNING]: Collection splunk.es does not support Ansible version 2.12.5
+[DEPRECATION WARNING]: ansible.netcommon.napalm has been deprecated. See the plugin documentation for more details. This feature will be removed from 
+ansible.netcommon in a release after 2022-06-01. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+ansible.netcommon.httpapi      Use httpapi to run command on network appliances                                                                         
+ansible.netcommon.libssh       (Tech preview) Run tasks using libssh for ssh connection                                                                 
+ansible.netcommon.napalm       Provides persistent connection using NAPALM                                                                              
+ansible.netcommon.netconf      Provides a persistent connection using the netconf protocol                                                              
+ansible.netcommon.network_cli  Use network_cli to run command on network appliances                                                                     
+ansible.netcommon.persistent   Use a persistent unix socket for connection                                                                              
+community.aws.aws_ssm          execute via AWS Systems Manager                                                                                          
+community.docker.docker        Run tasks in docker containers                                                                                           
+community.docker.docker_api    Run tasks in docker containers                                                                                           
+community.docker.nsenter       execute on host running controller container                                                                             
+community.general.chroot       Interact with local chroot                                                                                               
+community.general.funcd        Use funcd to connect to target                                                                                           
+community.general.iocage       Run tasks in iocage jails                                                                                                
+community.general.jail         Run tasks in jails                                                                                                       
+community.general.lxc          Run tasks in lxc containers via lxc python library                                                                       
+community.general.lxd          Run tasks in lxc containers via lxc CLI                                                                                  
+community.general.qubes        Interact with an existing QubesOS AppVM                                                                                  
+community.general.saltstack    Allow ansible to piggyback on salt minions                                                                               
+community.general.zone         Run tasks in a zone instance                                                                                             
+community.libvirt.libvirt_lxc  Run tasks in lxc containers via libvirt                                                                                  
+community.libvirt.libvirt_qemu Run tasks on libvirt/qemu virtual machines                                                                               
+community.okd.oc               Execute tasks in pods running on OpenShift                                                                               
+community.vmware.vmware_tools  Execute tasks inside a VM via VMware Tools                                                                               
+community.zabbix.httpapi       Use httpapi to run command on network appliances                                                                         
+containers.podman.buildah      Interact with an existing buildah container                                                                              
+containers.podman.podman       Interact with an existing podman container                                                                               
+kubernetes.core.kubectl        Execute tasks in pods running on Kubernetes                                                                              
+local                          execute on controller                                                                                                    
+paramiko_ssh                   Run tasks via python ssh (paramiko)                                                                                      
+psrp                           Run tasks over Microsoft PowerShell Remoting Protocol                                                                    
+ssh                            connect via SSH client binary                                                                                            
+winrm                          Run tasks over Microsoft's WinRM
+```
+
+**Нам интересен `local`**
+
+----
 10. *В `prod.yml` добавьте новую группу хостов с именем  `local`, в ней разместите localhost с необходимым типом подключения.*
 11. *Запустите playbook на окружении `prod.yml`. При запуске `ansible` должен запросить у вас пароль. Убедитесь что факты `some_fact` для каждого из хостов определены из верных `group_vars`.*
 12. *Заполните `README.md` ответами на вопросы. Сделайте `git push` в ветку `master`. В ответе отправьте ссылку на ваш открытый репозиторий с изменённым `playbook` и заполненным `README.md`.*
