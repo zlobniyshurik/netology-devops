@@ -87,7 +87,37 @@ localhost                  : ok=3    changed=0    unreachable=0    failed=0    s
 ```
 
 ----
-3. *Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.*
+3. *Воспользуйтесь подготовленным (используется `docker`) или создайте собственное окружение для проведения дальнейших испытаний.*  
+
+**Скачиваем docker-образы `CentOS7` и `Ubuntu`:**  
+```bash
+docker login
+docker pull pycontribs/centos:7
+docker pull pycontribs/ubuntu:latest
+```
+
+**Смотрим - чего у нас теперь есть:**
+```bash
+[root@juggernaut ~]# docker image list
+REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
+pycontribs/centos   7         bafa54e44377   13 months ago   488MB
+pycontribs/ubuntu   latest    42a4e3b21923   2 years ago     664MB
+```
+
+**Запускаем образы наших подопытных кроликов:**
+```bash
+[root@juggernaut ~]# docker run -d --name centos7 bafa54e44377 /bin/sleep 100000000000000
+9b195ac9cd0088be048ed1e90e0b1fe88728c72fedfea986ee1d3cb158c27396
+[root@juggernaut ~]# docker run -d --name ubuntu 42a4e3b21923 /bin/sleep 100000000000000
+d9013afe61ffab23bdf152788d6bf75fb45327ec2e73a646d9ca8dda9b071685
+[root@juggernaut ~]# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS          PORTS     NAMES
+d9013afe61ff   42a4e3b21923   "/bin/sleep 10000000…"   8 seconds ago    Up 3 seconds              ubuntu
+9b195ac9cd00   bafa54e44377   "/bin/sleep 10000000…"   37 seconds ago   Up 34 seconds             centos7
+[root@juggernaut ~]#
+```
+
+----
 4. *Проведите запуск playbook на окружении из `prod.yml`. Зафиксируйте полученные значения `some_fact` для каждого из `managed host`.*
 5. *Добавьте факты в `group_vars` каждой из групп хостов так, чтобы для `some_fact` получились следующие значения: для `deb` - 'deb default fact', для `el` - 'el default fact'.*
 6.  *Повторите запуск playbook на окружении `prod.yml`. Убедитесь, что выдаются корректные значения для всех хостов.*
