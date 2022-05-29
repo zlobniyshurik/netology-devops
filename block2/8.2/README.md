@@ -21,10 +21,43 @@
 ## Основная часть
 
 1. *Приготовьте свой собственный inventory файл `prod.yml`.*
+
+**Сделано, теперь внутренности `playbook/inventory/prod.yml` выглядят так:**  
+```yml
+---
+clickhouse:
+  hosts:
+    clickhouse-01:
+      ansible_host: test
+      connect: ssh
+```
+
+----
 2. *Допишите playbook: нужно сделать ещё один play, который устанавливает и настраивает [vector](https://vector.dev).*
+
+**Playbook потребовал кардинальной переработки, иначе часть с установкой `Clickhouse` была абсолютно нежизнеспособна**  
+
+----
 3. *При создании tasks рекомендую использовать модули: `get_url`, `template`, `unarchive`, `file`.*
+
+**Если уж оригинальный playbook был ориентирован на `rpm`, то и будем использовать готовый `ansible.builtin.dnf` модуль. Даже с ним приключений будет достаточно.**  
+
+----
 4. *Tasks должны: скачать нужной версии дистрибутив, выполнить распаковку в выбранную директорию, установить vector.*
+
+**Сделано. И даже работает...**
+
+----
 5. *Запустите `ansible-lint site.yml` и исправьте ошибки, если они есть.*
+
+**Да откуда же у меня ошибки? Нет их там, уже... :)**  
+```
+[shurik@megaboss playbook]$ ansible-lint inventory/prod.yml site.yml 
+WARNING  Overriding detected file kind 'yaml' with 'playbook' for given positional argument: site.yml
+[shurik@megaboss playbook]$
+```
+
+----
 6. *Попробуйте запустить playbook на этом окружении с флагом `--check`.*
 7. *Запустите playbook на `prod.yml` окружении с флагом `--diff`. Убедитесь, что изменения на системе произведены.*
 8. *Повторно запустите playbook с флагом `--diff` и убедитесь, что playbook идемпотентен.*
