@@ -63,6 +63,75 @@
 ----
 7. *Если сборка происходит на ветке `master`: Образ должен пушится в docker registry вашего gitlab `python-api:latest`, иначе этот шаг нужно пропустить*
 
+**Получилось как-то так:**  
+```yaml
+stages:
+    - build
+    - test
+
+variables: 
+    CI_IMAGE_FULLPATH: $CI_REGISTRY/$CI_PROJECT_PATH/python-api
+
+docker-build:
+
+  stage: build
+
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - export CI_IMAGE_FULLPATH_LOWERCASE=$(eval 'echo "$CI_IMAGE_FULLPATH" | tr "[:upper:]" "[:lower:]"')
+    - echo "Image path is '$CI_IMAGE_FULLPATH_LOWERCASE'"
+  # Default branch leaves tag empty (= latest tag)
+  # All other branches are tagged with the escaped branch name (commit ref slug)
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+        docker build --pull -t "$CI_IMAGE_FULLPATH_LOWERCASE${tag}" .
+        docker push "$CI_IMAGE_FULLPATH_LOWERCASE${tag}"
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+        docker build --pull -t "$CI_IMAGE_FULLPATH_LOWERCASE${tag}" .
+      fi
+ 
+  # Run this job in a branch where a Dockerfile exists
+  rules:
+    - if: $CI_COMMIT_BRANCH
+      exists:
+        - Dockerfile
+
+docker-test:  
+  stage: test
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+        tag=""
+      else
+        tag=":$CI_COMMIT_REF_SLUG"
+      fi  
+      export CI_IMAGE_FULLPATH_LOWERCASE=$(eval 'echo "$CI_IMAGE_FULLPATH" | tr "[:upper:]" "[:lower:]"')
+      docker run -d -p 5290:5290 --name webserver "$CI_IMAGE_FULLPATH_LOWERCASE${tag}"
+      sleep 15
+      if ( curl -s http://localhost:5290/get_info | grep 'Already started' ); then
+        echo "Работает! Зачищаем раннер..."
+        docker stop webserver
+        docker rm webserver
+        docker image remove "$CI_IMAGE_FULLPATH_LOWERCASE${tag}"
+      else
+        echo "Всё фигня, переделывай!"
+        docker stop webserver
+      fi
+
+```
+
+**И оно даже работает, правда-правда!**  
+![Пайплайн отработал удачно](./pic/dz9_5_7_1.png)
+
+**И в реестр контейнеры пушит...**  
+![Результат пуша в реестр](./pic/dz9_5_7_2.png)
+
+----
 ### Product Owner
 
 *Вашему проекту нужна бизнесовая доработка: необходимо поменять JSON ответа на вызов метода GET `/rest/api/get_info`, необходимо создать Issue в котором указать:*
