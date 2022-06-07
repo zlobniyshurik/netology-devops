@@ -42,14 +42,105 @@ go version go1.18.2 linux/amd64
         fmt.Println(output)    
     }
     ```
- 
+    **Не, здесь должно быть как-то так:**  
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+        fmt.Print("Enter a meters: ")
+        var input float64
+        fmt.Scanf("%f", &input)
+        output := input / 0.3048
+        fmt.Println("Result in foots: ", output)    
+        }
+    ```
+    **Результат выглядит примерно так:**  
+    ```
+    [shurik@megaboss m2f]$ ./main 
+    Enter a meters: 120
+    Result in foots:  393.70078740157476
+    ```
 1. *Напишите программу, которая найдет наименьший элемент в любом заданном списке, например:*
     ```
     x := []int{48,96,86,68,57,82,63,70,37,34,83,27,19,97,9,17,}
     ```
+
+    **без проблем :**  
+    
+    ```go
+    package main
+    import "fmt"
+    func main() {
+	    x := []int{48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17}
+	    min := x[0]
+	    for _, num := range x {
+		    if num < min {
+			    min = num
+		    }
+	    }
+	    fmt.Println("Minimal number is: ", min)
+    }
+
+    ```
+    **И оно даже работает!**  
+    ```
+    [shurik@megaboss tmpgo]$ ./minimum/main 
+    Minimal number is:  9
+    ```
 1. *Напишите программу, которая выводит числа от 1 до 100, которые делятся на 3. То есть `(3, 6, 9, …)`.*
 
-*В виде решения ссылку на код или сам код.* 
+    *В виде решения ссылку на код или сам код.*  
+
+    **Как-то так:**  
+    ```go
+    package main
+    import "fmt"
+    func main() {
+	    for x := 3; x <= 100; x = x + 3 {
+		    fmt.Println(x)
+	    }
+    }
+    ```
+    **Результат примерно такой:**  
+    ```
+    [shurik@megaboss div_by_3]$ ./main
+    3
+    6
+    9
+    12
+    15
+    18
+    21
+    24
+    27
+    30
+    33
+    36
+    39
+    42
+    45
+    48
+    51
+    54
+    57
+    60
+    63
+    66
+    69
+    72
+    75
+    78
+    81
+    84
+    87
+    90
+    93
+    96
+    99
+
+    ```
 
 ## Задача 4. Протестировать код (не обязательно).
 
