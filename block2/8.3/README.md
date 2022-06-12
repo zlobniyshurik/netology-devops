@@ -130,8 +130,20 @@ INFO     Initialized role in /root/test/vector successfully.
 
 ----
 9. *Переработайте playbook на использование roles. Не забудьте про зависимости lighthouse и возможности совмещения `roles` с `tasks`.*
+
+**Переработано**
+
+----
 10. *Выложите playbook в репозиторий.*
+
+**[Сделано](./playbook)**
+
+----
 11. *В ответ приведите ссылки на оба репозитория с roles и одну ссылку на репозиторий с playbook.*
+
+- **Репозиторий [vector-role](https://github.com/zlobniyshurik/vector-role)**
+- **Репозиторий [lighthouse-role](https://github.com/zlobniyshurik/lighthouse-role)**
+- **[Playbook](./playbook)**
 
 ---
 
