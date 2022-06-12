@@ -1,0 +1,63 @@
+---
+- name: Megatest
+  hosts: dz84
+
+  gather_facts: true
+
+  roles:
+    - { role: geerlingguy.nginx }
+    - { role: zlobniyshurik.lighthouse }
+    - { role: clickhouse }
+    - { role: zlobniyshurik.vector }
+
+  handlers:
+
+    - name: Clickhouse-server restart
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+
+  tasks:
+
+    - name: Create web-folder
+      ansible.builtin.file:
+        path: "/var/www"
+        state: directory
+        owner: "nginx"
+        group: "nginx"
+        mode: "0755"
+
+    - name: Copy Lighthouse to web-folder
+      ansible.builtin.copy:
+        src: "/tmp/lighthouse"
+        dest: "/var/www/"
+        remote_src: true
+        mode: "0755"
+        owner: "nginx"
+        group: "nginx"
+
+    - name: Enable HTTP in firewall
+      ansible.posix.firewalld:
+        zone: "public"
+        immediate: true
+        permanent: true
+        service: "http"
+        state: "enabled"
+
+    - name: Enable port 8123 in firewall
+      ansible.posix.firewalld:
+        zone: "public"
+        immediate: true
+        permanent: true
+        port: "8123/tcp"
+        state: "enabled"
+
+    - name: Copy Clickhouse user.xml config
+      ansible.builtin.copy:
+        src: "./users.xml"
+        dest: "/etc/clickhouse-server/users.d/users.xml"
+        mode: "0755"
+        owner: "clickhouse"
+        group: "clickhouse"
+      notify: "Clickhouse-server restart"

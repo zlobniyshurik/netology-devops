@@ -1,0 +1,18 @@
+---
+nginx_vhosts:
+  - listen: "80"
+    server_name: "_"
+    root: "/var/www/lighthouse"
+    index: "index.html"
+    access_log: "/var/log/nginx/lighthouse_access.log"
+    error_log: "/var/log/nginx/lighthouse_error.log"
+    state: "present"
+    template: "{{ nginx_vhost_template }}"
+    filename: "lighthouse.conf"
+
+clickhouse_listen_host:
+  - "::"
+
+clickhouse_dbs_custom:
+  - { name: vectordb, state: present }
+

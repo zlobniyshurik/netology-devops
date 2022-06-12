@@ -1,0 +1,6 @@
+---
+dz84:
+  hosts:
+    test:
+      ansible_host: test
+      connect: ssh
