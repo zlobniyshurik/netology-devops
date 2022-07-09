@@ -13,7 +13,7 @@
 **[Сделано](https://gitlab.com/ZlobniyShurik/netology-block2-dz95-gitlab)**
 
 ----
-3. *Создайте новый репозиторий в gitlab, наполните его [файлами](./repository)*
+3. *Создайте новый репозиторий в gitlab, наполните его [файлами](https://gitlab.com/ZlobniyShurik/netology-block2-dz95-gitlab)*
 
 **Готово**
 
